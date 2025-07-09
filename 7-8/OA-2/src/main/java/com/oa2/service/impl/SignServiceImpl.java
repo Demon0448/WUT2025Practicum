@@ -64,43 +64,37 @@ public class SignServiceImpl implements  SignService{
 
     @Override
     public RESP updateState(Sign sign, HttpSession session, String cor) {
+        String  address = LocationUtil.getAddressFromCoordinates(cor);
+
+        sign.setSign_address(address);
+
+        int i = signDao.updateState(sign,DU.getNowString());
+        if(i>0){
+            Emp emp = (Emp) session.getAttribute("emp");
+            String today= DU.getNowSortString();
+            List<Sign> signList = signDao.selectEmpSign(emp,today);
+            System.out.println("signList:"+signList);
+            if(signList != null){
+                return RESP.ok(signList);
+            }
+        }
+
+        return null;
+    }
+
+    @Override
+    public RESP selectByPage(int currentPage, int pageSize, HttpSession session) {
+        //1  获取员工信息(session)
         Emp emp = (Emp) session.getAttribute("emp");
-        if (emp == null) {
-            return null;
-        }
+        //法一 pageHelper 分页
+        PageHelper.startPage(currentPage, pageSize,true);
+        List<Sign> signList = signDao.selectByPagehelper(emp);
+        PageInfo<Sign> pageInfo = new PageInfo<>(signList);
+        System.out.println(pageInfo);
 
-        // 可选：校验是否为当前用户操作
-        if (sign.getNumber()==emp.getNumber()) {
-            return null;
-        }
+        //法二limit
 
-
-        // 腾讯地图API获取地理位置
-        String location = LocationUtil.getAddressFromCoordinates(cor);
-        if (location == null) {
-            return null;
-        }
-        // 设置签到信息
-
-
-        sign.setNumber(emp.getNumber());
-        sign.setSignDate(DU.getNowAM()); // 设置签到时间为当前时间
-        sign.setState("已签到");         // 设置签到状态为已签到
-        sign.setSign_address(location);
-
-
-
-
-        // 执行更新
-
-        //TODO
-        
-        int rows = signDao. updateState(sign, sign.getState());
-        if (rows <= 0) {
-            return RESP.error("签到失败，请重试");
-        }
-
-        return RESP.ok("签到成功");
-        }
+        return RESP.ok(pageInfo.getList(),pageInfo.getPageNum(),pageInfo.getPages());
+    }
 
 }

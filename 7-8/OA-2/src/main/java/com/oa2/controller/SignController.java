@@ -31,24 +31,14 @@ public class SignController {
     @RequestMapping("/updateState")
     @ResponseBody
     public RESP updateState(Sign sign,HttpSession session,@RequestParam("cor") String cor){
-
-        /**
-         * let param = "number=" + row.number + "&state=已签到&signDate=" + row.signDate + "&cor=" + position.coords.latitude + "," + position.coords.longitude;
-         *
-         *                             axios.post("sign/updateState", param)
-         *                                 .then(resp => {
-         *                                 if (resp.data === "") {
-         *                                 that.$message.error('签到失败，请重试');
-         *
-         *                             }
-         */
-
-
-
-
-
         return signService.updateState(sign, session, cor);
     }
 
+
+    @RequestMapping("/selectByPage")
+    public RESP selectByPage(@RequestParam ("currentPage") String currentPage, @RequestParam ("pageSize")String pageSize, HttpSession session){
+        System.out.println("currentPage:"+currentPage+"  pageSize:"+pageSize);
+        return signService.selectByPage(Integer.parseInt(currentPage), Integer.parseInt(pageSize), session);
+    }
 
 }

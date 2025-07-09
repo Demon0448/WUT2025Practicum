@@ -1,0 +1,86 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="LeetcodeEditor">
+    <option name="projectConfig">
+      <map>
+        <entry key="$PROJECT_DIR$/../A.temp/leetcode/editor/cn/[1]两数之和.cpp">
+          <value>
+            <LeetcodeEditor>
+              <option name="contentPath" value="$PROJECT_DIR$/../A.temp/leetcode/editor/cn/doc/content/[1]两数之和.md" />
+              <option name="frontendQuestionId" value="leetcode.cn1" />
+              <option name="host" value="leetcode.cn" />
+              <option name="path" value="$PROJECT_DIR$/../A.temp/leetcode/editor/cn/[1]两数之和.cpp" />
+              <option name="titleSlug" value="two-sum" />
+            </LeetcodeEditor>
+          </value>
+        </entry>
+        <entry key="$PROJECT_DIR$/../A.temp/leetcode/editor/cn/[3439]重新安排会议得到最多空余时间 I.cpp">
+          <value>
+            <LeetcodeEditor>
+              <option name="contentPath" value="$PROJECT_DIR$/../A.temp/leetcode/editor/cn/doc/content/[3439]重新安排会议得到最多空余时间 I.md" />
+              <option name="frontendQuestionId" value="leetcode.cn3439" />
+              <option name="host" value="leetcode.cn" />
+              <option name="path" value="$PROJECT_DIR$/../A.temp/leetcode/editor/cn/[3439]重新安排会议得到最多空余时间 I.cpp" />
+              <option name="titleSlug" value="reschedule-meetings-for-maximum-free-time-i" />
+            </LeetcodeEditor>
+          </value>
+        </entry>
+        <entry key="$PROJECT_DIR$/../A.temp/leetcode/editor/cn/[3517]最小回文排列 I.cpp">
+          <value>
+            <LeetcodeEditor>
+              <option name="contentPath" value="$PROJECT_DIR$/../A.temp/leetcode/editor/cn/doc/content/[3517]最小回文排列 I.md" />
+              <option name="frontendQuestionId" value="leetcode.cn3517" />
+              <option name="host" value="leetcode.cn" />
+              <option name="path" value="$PROJECT_DIR$/../A.temp/leetcode/editor/cn/[3517]最小回文排列 I.cpp" />
+              <option name="titleSlug" value="smallest-palindromic-rearrangement-i" />
+            </LeetcodeEditor>
+          </value>
+        </entry>
+        <entry key="$PROJECT_DIR$/../A.temp/leetcode/editor/cn/[60]排列序列.cpp">
+          <value>
+            <LeetcodeEditor>
+              <option name="contentPath" value="$PROJECT_DIR$/../A.temp/leetcode/editor/cn/doc/content/[60]排列序列.md" />
+              <option name="frontendQuestionId" value="leetcode.cn60" />
+              <option name="host" value="leetcode.cn" />
+              <option name="path" value="$PROJECT_DIR$/../A.temp/leetcode/editor/cn/[60]排列序列.cpp" />
+              <option name="titleSlug" value="permutation-sequence" />
+            </LeetcodeEditor>
+          </value>
+        </entry>
+        <entry key="$PROJECT_DIR$/../A.temp/leetcode/editor/cn/[LCR 083]全排列.cpp">
+          <value>
+            <LeetcodeEditor>
+              <option name="contentPath" value="$PROJECT_DIR$/../A.temp/leetcode/editor/cn/doc/content/[LCR 083]全排列.md" />
+              <option name="frontendQuestionId" value="leetcode.cnLCR 083" />
+              <option name="host" value="leetcode.cn" />
+              <option name="path" value="$PROJECT_DIR$/../A.temp/leetcode/editor/cn/[LCR 083]全排列.cpp" />
+              <option name="titleSlug" value="VvJkup" />
+            </LeetcodeEditor>
+          </value>
+        </entry>
+        <entry key="$PROJECT_DIR$/../A.temp/leetcode/editor/cn/[面试题 01.04]回文排列.cpp">
+          <value>
+            <LeetcodeEditor>
+              <option name="contentPath" value="$PROJECT_DIR$/../A.temp/leetcode/editor/cn/doc/content/[面试题 01.04]回文排列.md" />
+              <option name="frontendQuestionId" value="leetcode.cn面试题 01.04" />
+              <option name="host" value="leetcode.cn" />
+              <option name="path" value="$PROJECT_DIR$/../A.temp/leetcode/editor/cn/[面试题 01.04]回文排列.cpp" />
+              <option name="titleSlug" value="palindrome-permutation-lcci" />
+            </LeetcodeEditor>
+          </value>
+        </entry>
+        <entry key="$PROJECT_DIR$/../A.temp/leetcode/editor/cn/[面试题 08.07]无重复字符串的排列组合.cpp">
+          <value>
+            <LeetcodeEditor>
+              <option name="contentPath" value="$PROJECT_DIR$/../A.temp/leetcode/editor/cn/doc/content/[面试题 08.07]无重复字符串的排列组合.md" />
+              <option name="frontendQuestionId" value="leetcode.cn面试题 08.07" />
+              <option name="host" value="leetcode.cn" />
+              <option name="path" value="$PROJECT_DIR$/../A.temp/leetcode/editor/cn/[面试题 08.07]无重复字符串的排列组合.cpp" />
+              <option name="titleSlug" value="permutation-i-lcci" />
+            </LeetcodeEditor>
+          </value>
+        </entry>
+      </map>
+    </option>
+  </component>
+</project>

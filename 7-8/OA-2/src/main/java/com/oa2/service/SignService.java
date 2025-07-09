@@ -17,4 +17,6 @@ public interface SignService {
 
 
     RESP updateState(Sign sign, HttpSession session, String cor);
+
+    RESP selectByPage(int currentPage, int pageSize, HttpSession session);
 }
