@@ -2,9 +2,11 @@ package com.oa4.pojo;
 
 import lombok.Data;
 
+import java.io.Serializable;
+
 
 @Data
-public class Sign {
+public class Sign implements Serializable {
     private int id;
     private String signDate;
     private int number;

@@ -27,4 +27,6 @@ public interface EmpService {
     RESP updateEmp(Emp emp, int currentPage, int pageSize, HttpSession session);
 
     RESP deleteEmp(Emp emp, int currentPage, int pageSize, HttpSession session);
+
+    RESP updateDD(Emp emp, int currentPage, int pageSize, HttpSession session);
 }

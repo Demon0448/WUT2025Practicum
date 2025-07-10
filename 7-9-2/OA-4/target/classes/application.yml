@@ -15,7 +15,7 @@ spring:
     excluded-view-names:
   datasource:
     name: defaultDataSource
-    url: jdbc:mysql://localhost:3306/day?useSSL=false&useUnicode=true&characterEncoding=utf8&serverTimezone=UTC
+    url: jdbc:mysql://localhost:3306/day?useSSL=false&useUnicode=true&characterEncoding=utf8&serverTimezone=UTC&allowPublicKeyRetrieval=true
     username: root
     password: ljy15662273767
     driver-class-name: com.mysql.cj.jdbc.Driver

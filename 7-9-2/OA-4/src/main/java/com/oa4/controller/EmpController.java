@@ -82,6 +82,6 @@ public class EmpController {
     @ResponseBody
     public RESP updateDD(Emp emp,@RequestParam(name="currentPage") int currentPage,
                           @RequestParam(name="pageSize") int pageSize, HttpSession session){
-        return empService.updateEmp(emp, currentPage, pageSize, session);
+        return empService.updateDD(emp, currentPage, pageSize, session);
     }
 }

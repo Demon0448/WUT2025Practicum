@@ -2,8 +2,10 @@ package com.oa4.pojo;
 
 import lombok.Data;
 
+import java.io.Serializable;
+
 @Data
-public class Emp {
+public class Emp implements Serializable {
     private int number;
     private String name;
     private String pwd;
