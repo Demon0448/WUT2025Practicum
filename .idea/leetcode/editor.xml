@@ -3,6 +3,50 @@
   <component name="LeetcodeEditor">
     <option name="projectConfig">
       <map>
+        <entry key="$PROJECT_DIR$/../A.temp/leetcode/editor/cn/[1078]Bigram 分词.cpp">
+          <value>
+            <LeetcodeEditor>
+              <option name="contentPath" value="$PROJECT_DIR$/../A.temp/leetcode/editor/cn/doc/content/[1078]Bigram 分词.md" />
+              <option name="frontendQuestionId" value="leetcode.cn1078" />
+              <option name="host" value="leetcode.cn" />
+              <option name="path" value="$PROJECT_DIR$/../A.temp/leetcode/editor/cn/[1078]Bigram 分词.cpp" />
+              <option name="titleSlug" value="occurrences-after-bigram" />
+            </LeetcodeEditor>
+          </value>
+        </entry>
+        <entry key="$PROJECT_DIR$/../A.temp/leetcode/editor/cn/[1201]丑数 III.cpp">
+          <value>
+            <LeetcodeEditor>
+              <option name="contentPath" value="$PROJECT_DIR$/../A.temp/leetcode/editor/cn/doc/content/[1201]丑数 III.md" />
+              <option name="frontendQuestionId" value="leetcode.cn1201" />
+              <option name="host" value="leetcode.cn" />
+              <option name="path" value="$PROJECT_DIR$/../A.temp/leetcode/editor/cn/[1201]丑数 III.cpp" />
+              <option name="titleSlug" value="ugly-number-iii" />
+            </LeetcodeEditor>
+          </value>
+        </entry>
+        <entry key="$PROJECT_DIR$/../A.temp/leetcode/editor/cn/[1954]收集足够苹果的最小花园周长.cpp">
+          <value>
+            <LeetcodeEditor>
+              <option name="contentPath" value="$PROJECT_DIR$/../A.temp/leetcode/editor/cn/doc/content/[1954]收集足够苹果的最小花园周长.md" />
+              <option name="frontendQuestionId" value="leetcode.cn1954" />
+              <option name="host" value="leetcode.cn" />
+              <option name="path" value="$PROJECT_DIR$/../A.temp/leetcode/editor/cn/[1954]收集足够苹果的最小花园周长.cpp" />
+              <option name="titleSlug" value="minimum-garden-perimeter-to-collect-enough-apples" />
+            </LeetcodeEditor>
+          </value>
+        </entry>
+        <entry key="$PROJECT_DIR$/../A.temp/leetcode/editor/cn/[1996]游戏中弱角色的数量.cpp">
+          <value>
+            <LeetcodeEditor>
+              <option name="contentPath" value="$PROJECT_DIR$/../A.temp/leetcode/editor/cn/doc/content/[1996]游戏中弱角色的数量.md" />
+              <option name="frontendQuestionId" value="leetcode.cn1996" />
+              <option name="host" value="leetcode.cn" />
+              <option name="path" value="$PROJECT_DIR$/../A.temp/leetcode/editor/cn/[1996]游戏中弱角色的数量.cpp" />
+              <option name="titleSlug" value="the-number-of-weak-characters-in-the-game" />
+            </LeetcodeEditor>
+          </value>
+        </entry>
         <entry key="$PROJECT_DIR$/../A.temp/leetcode/editor/cn/[1]两数之和.cpp">
           <value>
             <LeetcodeEditor>
@@ -11,6 +55,17 @@
               <option name="host" value="leetcode.cn" />
               <option name="path" value="$PROJECT_DIR$/../A.temp/leetcode/editor/cn/[1]两数之和.cpp" />
               <option name="titleSlug" value="two-sum" />
+            </LeetcodeEditor>
+          </value>
+        </entry>
+        <entry key="$PROJECT_DIR$/../A.temp/leetcode/editor/cn/[3036]匹配模式数组的子数组数目 II.cpp">
+          <value>
+            <LeetcodeEditor>
+              <option name="contentPath" value="$PROJECT_DIR$/../A.temp/leetcode/editor/cn/doc/content/[3036]匹配模式数组的子数组数目 II.md" />
+              <option name="frontendQuestionId" value="leetcode.cn3036" />
+              <option name="host" value="leetcode.cn" />
+              <option name="path" value="$PROJECT_DIR$/../A.temp/leetcode/editor/cn/[3036]匹配模式数组的子数组数目 II.cpp" />
+              <option name="titleSlug" value="number-of-subarrays-that-match-a-pattern-ii" />
             </LeetcodeEditor>
           </value>
         </entry>

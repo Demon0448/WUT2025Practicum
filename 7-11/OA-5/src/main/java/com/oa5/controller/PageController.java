@@ -35,4 +35,20 @@ public class PageController {
         return "dutyManage";
     }
 
+    @RequestMapping("/stuSign")
+    public String stuSign() {
+        return "stuSign";
+    }
+    @RequestMapping("/signList")
+    public String signList() {
+        return "signList";
+    }
+    @RequestMapping("/stuNoSign")
+    public String stuNoSign() {
+        return "stuNoSign";
+    }
+    @RequestMapping("/signImg")
+    public String signImg() {
+        return "signImg";
+    }
 }

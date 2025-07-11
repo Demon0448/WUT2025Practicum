@@ -56,8 +56,8 @@ public class DutyServiceImpl implements DutyService {
         int result = dutyDao.updateDutyNameById(duty);
         if (result > 0) {
             //更新成功，清除缓存
-            String key = "duty_and_num:*";
-            cleanCache(key);
+            cleanCache("duty_and_num:*");
+            cleanCache("Duty");
             //重新查询并返回结果 函数复用
             return selectAllDutyAndNum(currentPage, pageSize);
         }
@@ -76,8 +76,9 @@ public class DutyServiceImpl implements DutyService {
         int result = dutyDao.addDuty(duty);
         if (result > 0) {
             //添加成功，清除缓存
-            String key = "duty_and_num:*";
-            cleanCache(key);
+
+            cleanCache("duty_and_num:*");
+            cleanCache("Duty");
             //重新查询并返回结果 函数复用
             return selectAllDutyAndNum(currentPage, pageSize);
         }

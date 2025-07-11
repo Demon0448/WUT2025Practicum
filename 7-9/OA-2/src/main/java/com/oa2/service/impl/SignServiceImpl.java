@@ -11,6 +11,7 @@ import com.oa2.util.DU;
 import com.oa2.util.IpToAddressUtil;
 import com.oa2.util.LocationUtil;
 import com.oa2.util.RESP;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -21,6 +22,7 @@ import java.util.stream.Collectors;
 
 
 @Service
+@Slf4j
 public class SignServiceImpl implements SignService {
     @Autowired
     private SignDao signDao;
@@ -104,6 +106,7 @@ public class SignServiceImpl implements SignService {
         //1 获取对应的地址(根据前端获取的经纬度  IP地址  服务器地址  来确认签到地址)
         //String address = IpToAddressUtil.getCityInfo(IpToAddressUtil.getV4IP(), "geocoder", cor);
         String address= LocationUtil.getAddressFromCoordinates(cor);
+        log.info("address:"+address);
         //2  将地址 传递至sign类
         sign.setSign_address(address);
         int i = signDao.updateState(sign, DU.getNowString());

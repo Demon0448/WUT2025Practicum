@@ -50,13 +50,14 @@ public class EmpServiceImpl implements EmpService {
             //将结果写入到Redis中
             String jsonString = JSONObject.toJSONString(lists);
             jedis.set("Dept", jsonString);
-            //归还连接
-            jedis.close();
+
         } else {
             //直接从Redis中读取数据
             lists = JSONObject.parseArray(dept_json, Department.class);
             System.out.println("直接查询Redis中的部门......");
         }
+        //归还连接
+        jedis.close();
         return RESP.ok(lists);
     }
 
@@ -76,13 +77,16 @@ public class EmpServiceImpl implements EmpService {
             //将结果写入到Redis中
             String jsonString = JSONObject.toJSONString(Duty_lists);
             jedis.set("Duty", jsonString);
-            //归还连接
-            jedis.close();
+
         } else {
             //直接从Redis中读取数据
             Duty_lists = JSONObject.parseArray(dept_json, Duty.class);
             System.out.println("直接查询Redis中的职务......");
         }
+        //TODO jedis close
+
+        //归还连接
+        jedis.close();
         return RESP.ok(Duty_lists);
     }
 

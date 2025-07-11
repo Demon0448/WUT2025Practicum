@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <script src="../static/js/echarts.js"></script>
+    <title>Title</title>
+    <style>
+        #box {
+            width: 1200px;
+            height: 900px;
+            background-color: #e9e9eb;
+        }
+    </style>
+
+</head>
+<body>
+
+<div id="box"></div>
+
+</body>
+<script>
+    var myChart = echarts.init(document.getElementById('box'));
+    var option = {
+        xAxis: {
+            type: 'category',
+            data: ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun']
+        },
+        yAxis: {
+            type: 'value'
+        },
+        series: [{
+            data: [820, 932, 901, 934, 1290, 1330, 1320],
+            type: 'bar'
+        }]
+    };
+
+    myChart.setOption(option);
+
+
+</script>
+
+</html>

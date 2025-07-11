@@ -61,6 +61,7 @@ public class DeptServiceImpl implements DeptService {
             log.info("Added new department: {}", deptName);
             // 清除缓存
             cleanCache("dept_and_num:*");
+            cleanCache("Dept");
             return selectAllDeptAndNum(currentPage, pageSize);
         }
         return null;
@@ -84,6 +85,7 @@ public class DeptServiceImpl implements DeptService {
             log.info("Updated department ID {} to new name: {}", deptId, deptName);
             // 清除缓存
             cleanCache("dept_and_num:*");
+            cleanCache("Dept");
             return selectAllDeptAndNum(currentPage, pageSize);
         }
         return null;
