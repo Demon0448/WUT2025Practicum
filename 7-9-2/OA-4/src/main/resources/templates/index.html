@@ -69,8 +69,20 @@
                             <el-menu-item @click="findAll" index="1-1">
                                 <i class="el-icon-help"></i>员工信息管理
                             </el-menu-item>
+
                             <el-menu-item @click="update_duty_dept" index="1-2"><i class="el-icon-help"></i>员工人事变动
                             </el-menu-item>
+
+<!--                            新添加 deptManage.html 和 dutyManage.html-->
+                            <el-menu-item @click="deptManage" index="1-3">
+                                <i class="el-icon-help"></i>部门管理
+                            </el-menu-item>
+
+                            <el-menu-item @click="dutyManage" index="1-4">
+                                <i class="el-icon-help"></i>职位管理
+                            </el-menu-item>
+
+
                         </el-menu-item-group>
                     </el-submenu>
                 </el-menu>
@@ -102,6 +114,12 @@
             update_duty_dept: function () {
                 this.iframeSrc = "updateDutyDept"
             },
+            deptManage: function () {
+                this.iframeSrc = "deptManage"
+            },
+            dutyManage: function () {
+                this.iframeSrc = "dutyManage"
+            }
         }
     });
 </script>

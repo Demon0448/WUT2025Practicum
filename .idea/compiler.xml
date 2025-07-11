@@ -9,12 +9,14 @@
         <outputRelativeToContentRoot value="true" />
         <module name="OA-1 (2)" />
         <module name="OA-1 (3)" />
+        <module name="OA-3 (1)" />
         <module name="OA-1 (1)" />
-        <module name="OA-3" />
+        <module name="OA-3 (2)" />
       </profile>
     </annotationProcessing>
     <bytecodeTargetLevel>
       <module name="OA-1" target="1.8" />
+      <module name="OA-3" target="1.8" />
     </bytecodeTargetLevel>
   </component>
 </project>

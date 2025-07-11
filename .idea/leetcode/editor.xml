@@ -25,6 +25,17 @@
             </LeetcodeEditor>
           </value>
         </entry>
+        <entry key="$PROJECT_DIR$/../A.temp/leetcode/editor/cn/[3440]重新安排会议得到最多空余时间 II.cpp">
+          <value>
+            <LeetcodeEditor>
+              <option name="contentPath" value="$PROJECT_DIR$/../A.temp/leetcode/editor/cn/doc/content/[3440]重新安排会议得到最多空余时间 II.md" />
+              <option name="frontendQuestionId" value="leetcode.cn3440" />
+              <option name="host" value="leetcode.cn" />
+              <option name="path" value="$PROJECT_DIR$/../A.temp/leetcode/editor/cn/[3440]重新安排会议得到最多空余时间 II.cpp" />
+              <option name="titleSlug" value="reschedule-meetings-for-maximum-free-time-ii" />
+            </LeetcodeEditor>
+          </value>
+        </entry>
         <entry key="$PROJECT_DIR$/../A.temp/leetcode/editor/cn/[3517]最小回文排列 I.cpp">
           <value>
             <LeetcodeEditor>
@@ -33,6 +44,17 @@
               <option name="host" value="leetcode.cn" />
               <option name="path" value="$PROJECT_DIR$/../A.temp/leetcode/editor/cn/[3517]最小回文排列 I.cpp" />
               <option name="titleSlug" value="smallest-palindromic-rearrangement-i" />
+            </LeetcodeEditor>
+          </value>
+        </entry>
+        <entry key="$PROJECT_DIR$/../A.temp/leetcode/editor/cn/[3578]统计极差最大为 K 的分割方式数.cpp">
+          <value>
+            <LeetcodeEditor>
+              <option name="contentPath" value="$PROJECT_DIR$/../A.temp/leetcode/editor/cn/doc/content/[3578]统计极差最大为 K 的分割方式数.md" />
+              <option name="frontendQuestionId" value="leetcode.cn3578" />
+              <option name="host" value="leetcode.cn" />
+              <option name="path" value="$PROJECT_DIR$/../A.temp/leetcode/editor/cn/[3578]统计极差最大为 K 的分割方式数.cpp" />
+              <option name="titleSlug" value="count-partitions-with-max-min-difference-at-most-k" />
             </LeetcodeEditor>
           </value>
         </entry>
