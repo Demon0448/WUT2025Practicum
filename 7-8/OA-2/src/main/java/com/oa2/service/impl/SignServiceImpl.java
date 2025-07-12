@@ -50,10 +50,12 @@ public class SignServiceImpl implements  SignService{
                 sign.setNumber(i);//124
                 sign.setState("未签到");//
                 sign.setType("a");//
+//                sign.setTag(1);
                 signDao.addSign(sign);
 
                 sign.setSignDate(DU.getNowPM());
                 sign.setType("p");
+//                sign.setTag(1);
                 signDao.addSign(sign);
             }
 
@@ -67,6 +69,7 @@ public class SignServiceImpl implements  SignService{
         String  address = LocationUtil.getAddressFromCoordinates(cor);
 
         sign.setSign_address(address);
+
 
         int i = signDao.updateState(sign,DU.getNowString());
         if(i>0){

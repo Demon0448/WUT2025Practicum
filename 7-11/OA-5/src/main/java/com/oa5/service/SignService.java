@@ -18,6 +18,6 @@ public interface SignService {
 
     RESP selectToDayNoByPage(Integer currentPage, Integer pageSize);
 
-    RESP selectImgSignList();
+    RESP selectImgSignList(Integer currentPage, Integer pageSize);
 
 }

@@ -15,10 +15,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 @Service
 @Slf4j
@@ -78,17 +75,18 @@ public class SignServiceImpl implements SignService {
     }
 
     @Override
-    public RESP selectImgSignList() {
-        // 得到最近五天的日期字符串
-        String[] lastFiveDays = new String[5];
+    public RESP selectImgSignList(Integer currentPage, Integer pageSize) {
+        // 得到最近十天的日期字符串
+        String[] lastTenDays = new String[10];
         List<Integer> yesCountList = new ArrayList<>(); // 已签到人数
         List<Integer> noCountList = new ArrayList<>();  // 未签到人数
         List<Integer> totalList = new ArrayList<>();    // 需签到总人数
+        //一页十组，通过LocalDate.now().minusDays(i).toString()进行日期减法，得到最近十天
+        int start = (currentPage - 1) * pageSize;
+        for (int i = start; i < 10+start; i++) {
+            lastTenDays[i-start] = LocalDate.now().minusDays(i).toString();
 
-        for (int i = 0; i < 5; i++) {
-            lastFiveDays[i] = LocalDate.now().minusDays(i).toString();
-            log.info("第" + i + "天是：" + lastFiveDays[i]);
-            SignCountDTO signCountDTO = signDao.selectByDay(lastFiveDays[i]);
+            SignCountDTO signCountDTO = signDao.selectByDay(lastTenDays[i-start]);
             log.info("查询到的签到统计数据: {}", signCountDTO);
 
             if (signCountDTO != null) {
@@ -103,7 +101,8 @@ public class SignServiceImpl implements SignService {
             }
         }
 
-        return RESP.ok(lastFiveDays,yesCountList,noCountList,totalList);
+        //TODO: 添加返回数据
+        return RESP.ok(lastTenDays, yesCountList, noCountList, totalList);
     }
 
 

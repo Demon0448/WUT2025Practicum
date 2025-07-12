@@ -15,6 +15,7 @@ public class RESP {
     private Object data1;
     private Object data2;
     private Object data3;
+    private Object data4;
     private int pageNum;
     private int total;
 
@@ -47,6 +48,13 @@ public class RESP {
         this.data1 = data1;
         this.data2 = data2;
     }
+    public RESP(Object data , Object data1 , Object data2 , Object data3 , Object data4) {
+        this.data = data;
+        this.data1 = data1;
+        this.data2 = data2;
+        this.data3 = data3;
+        this.data4 = data4;
+    }
 
     public static RESP ok(Object data , Object data1 , Object data2) {
         return new RESP(data , data1 , data2);
@@ -54,6 +62,10 @@ public class RESP {
 
     public static RESP ok(Object data , Object data1 , Object data2 , Object data3) {
         return new RESP(data , data1 , data2 , data3);
+    }
+    //5个参数
+    public static RESP ok(Object data , Object data1 , Object data2 , Object data3 , Object data4) {
+        return new RESP(data , data1 , data2 , data3 , data4);
     }
 
     public static RESP ok(Object data , int pageNum , int total) {

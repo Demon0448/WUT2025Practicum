@@ -7,6 +7,7 @@ import com.oa5.util.RESP;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -56,14 +57,13 @@ public class SignController {
         return signService.selectNoByPage(currentPage,pageSize);
 
     }
-    //路径 selectImgSignList POST TODO 暂无参数
+    //路径 selectImgSignList POST TODO 暂无参数 需要修改
     //    selectImgSignList
     @RequestMapping("/selectImgSignList")
-
-    public RESP selectImgSignList() {
-
-        log.info("调用路径：selectImgSignList");
-        return signService.selectImgSignList();
+    public RESP selectImgSignList(@RequestParam(defaultValue = "1") Integer currentPage, 
+                              @RequestParam(defaultValue = "10") Integer pageSize) {
+        log.info("调用路径：selectImgSignList {},{}", currentPage, pageSize);
+        return signService.selectImgSignList(currentPage, pageSize);
     }
 
     //路径 updateStateYes POST 参数 number currentPage pageSize state signDate
