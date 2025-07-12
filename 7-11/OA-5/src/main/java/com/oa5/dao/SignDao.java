@@ -111,6 +111,7 @@ public interface SignDao {
     List<Sign> selectYes();
 
 
+
     //查询未签到的员工考勤信息 不要limit
     @Select("select sign.*,dept_name,name from day.sign " +
             "left join day.emp e on e.number = sign.number " +
@@ -202,6 +203,14 @@ public interface SignDao {
 //    @Delete("DELETE  from day.sign  WHERE signDate  BETWEEN  signDate=#{beganDate} and signDate=#{endDate}")
 //    void deleteSign(String beganDate,String endDate);
 
+    @Select("select sign.* from day.sign " +
+            "where day.sign.number=#{employeeNumber} " +
+            "and day.sign.state=#{state} " +
+            "order by id DESC")
+    List<Sign> selectByEmployeeNumberAndState(@Param("employeeNumber") String employeeNumber,
+                                              @Param("state") String state);
 
+    @Select("select count(*) from day.sign where number=#{employeeNumber}")
+    int countByEmployeeNumber(@Param("employeeNumber") String employeeNumber);
 
 }

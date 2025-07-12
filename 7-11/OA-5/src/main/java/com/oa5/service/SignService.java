@@ -20,4 +20,6 @@ public interface SignService {
 
     RESP selectImgSignList(Integer currentPage, Integer pageSize);
 
+    RESP searchByEmployeeNumberAndState(String employeeNumber, String  state,Integer currentPage, Integer pageSize);
+
 }

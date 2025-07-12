@@ -17,16 +17,20 @@
     </div>
 
     <!-- 数据展现表格 -->
-    <el-table :data="tableData.filter(data=>!search_users || data.number.toLowerCase().includes(search_users.toLowerCase()))">
+    <el-table :data="tableData.filter(data=>!search_users || String(data.number).includes(search_users))">
         <!--表格搜索框层-->
         <el-table-column align="center">
             <el-col slot="header" slot-scope="scope">
                 <i class="el-icon-menu"></i>
                 <el-input
-                        placeholder="请输员工工号"
-                        size="mini"
-                        style="width: 30%"
-                        v-model="search_users"></el-input>
+                    placeholder="请输员工工号"
+                    size="mini"
+                    style="width: 30%"
+                    v-model="search_users"
+                    @keyup.enter="searchByEmployeeNumber">
+                </el-input>
+                <!-- 新增按钮 -->
+                <el-button type="primary" size="mini" style="margin-left: 10px;" @click="searchByEmployeeNumber">搜索</el-button>
             </el-col>
             <el-table-column label="日期" prop="signDate" min-width="200px" align="center">
             </el-table-column>
@@ -217,6 +221,26 @@
                     this.flag = true
                 }
 
+            },
+            // 新增方法：根据工号查询考勤信息
+            searchByEmployeeNumber() {
+                axios.post("sign/searchByEmployeeNumberAndState", "employeeNumber=" + this.search_users +
+                    "&currentPage=" + this.pagination.currentPage +
+                    "&pageSize=" + this.pagination.pageSize+
+                    "&state=已签到")
+                    .then(resp => {
+                        this.$message({
+                            message: '查询成功',
+                            type: 'success'
+                        });
+                        this.tableData = resp.data.data;
+                        this.pagination.currentPage = resp.data.pageNum;
+                        this.pagination.total = resp.data.total;
+                    })
+                    .catch(error => {
+                        this.$message.error('查询失败');
+                        console.error(error);
+                    });
             }
         },
         mounted() {

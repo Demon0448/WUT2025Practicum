@@ -83,4 +83,13 @@ public class SignController {
         return signService.updateStateNo(sign, currentPage, pageSize);
     }
 
+    @RequestMapping("/searchByEmployeeNumberAndState")
+    @ResponseBody
+    public RESP searchByEmployeeNumberAndState(@RequestParam String employeeNumber,
+                                                @RequestParam String state,
+                                   @RequestParam(defaultValue = "1") Integer currentPage,
+                                   @RequestParam(defaultValue = "8") Integer pageSize) {
+        log.info("调用路径：searchByEmployeeNumber");
+        return signService.searchByEmployeeNumberAndState(employeeNumber,state ,currentPage, pageSize);
+    }
 }

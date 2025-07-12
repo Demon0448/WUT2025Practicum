@@ -135,7 +135,12 @@ public class SignServiceImpl implements SignService {
         return selectNoByPage(currentPage,pageSize);
     }
 
-
-
-
+    @Override
+    public RESP searchByEmployeeNumberAndState(String employeeNumber,String  state ,Integer currentPage, Integer pageSize) {
+        log.info("当前页: {}, 每页大小: {}, 工号: {}", currentPage, pageSize, employeeNumber);
+        PageHelper.startPage(currentPage, pageSize, true);
+        List<Sign> signList = signDao.selectByEmployeeNumberAndState(employeeNumber, state);
+        PageInfo<Sign> data = new PageInfo<>(signList);
+        return RESP.ok(data.getList(), data.getPageNum(), (int) data.getTotal());
+    }
 }
