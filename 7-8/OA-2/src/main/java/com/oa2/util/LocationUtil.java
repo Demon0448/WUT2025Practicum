@@ -15,7 +15,8 @@ import java.util.Map;
 public class LocationUtil {
 
     // 腾讯地图API Key
-    private static final String TENCENT_MAP_KEY = "U7TBZ-ZDG6N-QLRFW-SRVED-S52I6-JVBSW";
+//    private static final String TENCENT_MAP_KEY = "U7TBZ-ZDG6N-QLRFW-SRVED-S52I6-JVBSW";
+    private static final String TENCENT_MAP_KEY = "JSTBZ-UEPWK-SEMJX-APSBD-YRJFK-IMBIM";
 
     
     // 腾讯地图逆地理编码API URL

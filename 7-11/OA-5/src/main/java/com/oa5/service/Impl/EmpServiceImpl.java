@@ -10,6 +10,7 @@ import com.oa5.pojo.Emp;
 import com.oa5.service.EmpService;
 import com.oa5.util.JediPoolUtil;
 import com.oa5.util.RESP;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import redis.clients.jedis.Jedis;
@@ -18,6 +19,7 @@ import java.util.List;
 
 
 @Service
+@Slf4j
 public class EmpServiceImpl implements EmpService {
     @Autowired
     private EmpDao empDao;
@@ -56,6 +58,7 @@ public class EmpServiceImpl implements EmpService {
             lists = JSONObject.parseArray(dept_json, Department.class);
             System.out.println("直接查询Redis中的部门......");
         }
+
         //归还连接
         jedis.close();
         return RESP.ok(lists);

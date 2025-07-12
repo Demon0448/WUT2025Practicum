@@ -1,0 +1,153 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="AutoImportSettings">
+    <option name="autoReloadType" value="SELECTIVE" />
+  </component>
+  <component name="ChangeListManager">
+    <list default="true" id="52d38a93-b917-4313-a53d-2ce5890e970c" name="Default Changelist" comment="" />
+    <option name="SHOW_DIALOG" value="false" />
+    <option name="HIGHLIGHT_CONFLICTS" value="true" />
+    <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
+    <option name="LAST_RESOLUTION" value="IGNORE" />
+  </component>
+  <component name="FileTemplateManagerImpl">
+    <option name="RECENT_TEMPLATES">
+      <list>
+        <option value="Class" />
+      </list>
+    </option>
+  </component>
+  <component name="MavenImportPreferences">
+    <option name="generalSettings">
+      <MavenGeneralSettings>
+        <option name="userSettingsFile" value="D:\tool\apache-maven-3.5.2\conf\settings.xml" />
+      </MavenGeneralSettings>
+    </option>
+  </component>
+  <component name="MavenRunner">
+    <option name="vmOptions" value="-DarchetypeCatalog=local" />
+  </component>
+  <component name="ProjectColorInfo"><![CDATA[{
+  "customColor": "",
+  "associatedIndex": 5
+}]]></component>
+  <component name="ProjectId" id="2FOBz0Q1NNXdTz86cFeaYcEvRqG" />
+  <component name="ProjectViewState">
+    <option name="hideEmptyMiddlePackages" value="true" />
+    <option name="showLibraryContents" value="true" />
+  </component>
+  <component name="PropertiesComponent"><![CDATA[{
+  "keyToString": {
+    "Application.DeleteSgin.executor": "Run",
+    "RequestMappingsPanelOrder0": "0",
+    "RequestMappingsPanelOrder1": "1",
+    "RequestMappingsPanelWidth0": "75",
+    "RequestMappingsPanelWidth1": "75",
+    "Spring Boot.Oa3Application.executor": "Run",
+    "kotlin-language-version-configured": "true",
+    "last_opened_file_path": "D:/JavaEE/Project/OASpringBoot+Vue/OA-2",
+    "node.js.detected.package.eslint": "true",
+    "node.js.detected.package.tslint": "true",
+    "node.js.selected.package.eslint": "(autodetect)",
+    "node.js.selected.package.tslint": "(autodetect)",
+    "nodejs_package_manager_path": "npm",
+    "settings.editor.selected.configurable": "editor.preferences.fonts.default",
+    "vue.rearranger.settings.migration": "true"
+  }
+}]]></component>
+  <component name="ReactorSettings">
+    <option name="notificationShown" value="true" />
+  </component>
+  <component name="RecentsManager">
+    <key name="CopyFile.RECENT_KEYS">
+      <recent name="D:\JavaEE\Project\OASpringBoot+Vue\OA-7\src\main\resources\templates" />
+      <recent name="D:\JavaEE\Project\OASpringBoot+Vue\OA-7\src\main\java\com\oa7\util" />
+    </key>
+    <key name="MoveFile.RECENT_KEYS">
+      <recent name="D:\JavaEE\Project\OASpringBoot+Vue\OA-7\src\main\resources" />
+    </key>
+    <key name="CopyClassDialog.RECENTS_KEY">
+      <recent name="com.oa7.util" />
+    </key>
+  </component>
+  <component name="RunManager" selected="Application.DeleteSgin">
+    <configuration name="DeleteSgin" type="Application" factoryName="Application" temporary="true" nameIsGenerated="true">
+      <option name="MAIN_CLASS_NAME" value="com.oa7.config.DeleteSgin" />
+      <module name="OA-3" />
+      <extension name="coverage">
+        <pattern>
+          <option name="PATTERN" value="com.oa7.config.*" />
+          <option name="ENABLED" value="true" />
+        </pattern>
+      </extension>
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
+    <configuration name="Oa3Application" type="SpringBootApplicationConfigurationType" factoryName="Spring Boot">
+      <module name="OA-3" />
+      <option name="SPRING_BOOT_MAIN_CLASS" value="com.oa7.Oa3Application" />
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
+    <recent_temporary>
+      <list>
+        <item itemvalue="Application.DeleteSgin" />
+      </list>
+    </recent_temporary>
+  </component>
+  <component name="SharedIndexes">
+    <attachedChunks>
+      <set>
+        <option value="bundled-jdk-9f38398b9061-18abd8497189-intellij.indexing.shared.core-IU-241.14494.240" />
+        <option value="bundled-js-predefined-1d06a55b98c1-74d2a5396914-JavaScript-IU-241.14494.240" />
+      </set>
+    </attachedChunks>
+  </component>
+  <component name="SpellCheckerSettings" RuntimeDictionaries="0" Folders="0" CustomDictionaries="0" DefaultDictionary="application-level" UseSingleDictionary="true" transferred="true" />
+  <component name="SvnConfiguration">
+    <configuration />
+  </component>
+  <component name="TaskManager">
+    <task active="true" id="Default" summary="Default task">
+      <changelist id="52d38a93-b917-4313-a53d-2ce5890e970c" name="Default Changelist" comment="" />
+      <created>1664353508613</created>
+      <option name="number" value="Default" />
+      <option name="presentableId" value="Default" />
+      <updated>1664353508613</updated>
+      <workItem from="1664353510891" duration="52000" />
+      <workItem from="1669194715503" duration="88000" />
+      <workItem from="1699085715380" duration="5489000" />
+      <workItem from="1699103880693" duration="1036000" />
+      <workItem from="1699106751521" duration="593000" />
+      <workItem from="1699231600768" duration="1069000" />
+      <workItem from="1699234278573" duration="617000" />
+      <workItem from="1699500414152" duration="33000" />
+      <workItem from="1701140267693" duration="147000" />
+      <workItem from="1735175299670" duration="259000" />
+      <workItem from="1749713468387" duration="6726000" />
+      <workItem from="1749720272815" duration="686000" />
+      <workItem from="1749975935432" duration="1930000" />
+      <workItem from="1750385991094" duration="6122000" />
+      <workItem from="1750403086376" duration="1821000" />
+      <workItem from="1750411362204" duration="677000" />
+      <workItem from="1750519938978" duration="552000" />
+      <workItem from="1750566214494" duration="242000" />
+      <workItem from="1751336580667" duration="1626000" />
+      <workItem from="1751349585693" duration="4948000" />
+      <workItem from="1751355381216" duration="29000" />
+      <workItem from="1752030575424" duration="4066000" />
+      <workItem from="1752218844355" duration="210000" />
+      <workItem from="1752302200158" duration="5673000" />
+    </task>
+    <servers />
+  </component>
+  <component name="TypeScriptGeneratedFilesManager">
+    <option name="version" value="3" />
+  </component>
+  <component name="XSLT-Support.FileAssociations.UIState">
+    <expand />
+    <select />
+  </component>
+</project>
