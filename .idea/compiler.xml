@@ -7,11 +7,13 @@
         <sourceOutputDir name="target/generated-sources/annotations" />
         <sourceTestOutputDir name="target/generated-test-sources/test-annotations" />
         <outputRelativeToContentRoot value="true" />
+        <module name="OA-3 (1)" />
+        <module name="oa-emp-service" />
         <module name="OA-1 (2)" />
         <module name="OA-1 (3)" />
-        <module name="OA-3 (1)" />
         <module name="OA-1 (1)" />
         <module name="OA-3 (2)" />
+        <module name="gateway" />
       </profile>
     </annotationProcessing>
     <bytecodeTargetLevel>
