@@ -15,7 +15,8 @@
     <modules>
         <module>gateway</module>
         <module>OA-2</module>
-<!--        <module>OA-7</module>-->
+<!--        <module>oa-admin-service</module>-->
+        <!--        <module>OA-7</module>-->
     </modules>
 
     <properties>
