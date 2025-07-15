@@ -23,6 +23,11 @@ public interface SignDao {
 //    GROUP BY signDay
 //    ORDER BY signDay DESC;
 
+
+    @Select("select * from day.sign where signDate like concat(#{date},'%' )")
+    List<Sign> selectByDate(String date);
+
+
     //TODO 很重要！！！
 
     //将上方的SQL语句转换为MyBatis注解形式
@@ -212,5 +217,6 @@ public interface SignDao {
 
     @Select("select count(*) from day.sign where number=#{employeeNumber}")
     int countByEmployeeNumber(@Param("employeeNumber") String employeeNumber);
+
 
 }

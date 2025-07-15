@@ -54,6 +54,9 @@ public class SignServiceElasticsearchImpl implements SignService {
         System.out.println(TodayRecords.size());
 
         if (TodayRecords.isEmpty()) {
+            //TODO  建立当前所有员工的签到任务
+            //先mysql阶段
+            //然后是elasticsearch
             // 只为当前员工创建今日的签到记录
             // 创建上午签到记录
             Sign morSign = createSign(emp.getNumber(), DU.getNowAM(), "未签到", "a");

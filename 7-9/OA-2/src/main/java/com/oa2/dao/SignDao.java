@@ -11,11 +11,12 @@ import java.util.List;
 @Repository
 public interface SignDao {
 
-    @Select("select sign.*,dept_name,name from day.sign " +
+    @Select("select sign.*,d.dept_name,e.name from day.sign " +
             "left join day.emp e on e.number = sign.number " +
             "left join day.department d on d.dept_id = e.dept_id " +
             "where day.sign.number=#{emp.number}   " +
             "and signDate like concat(#{today},'%' )")
+
     List<Sign> selectEmpSign(@Param("emp") Emp emp , @Param("today") String today);
 
 
@@ -31,7 +32,7 @@ public interface SignDao {
     List<Sign> SelectByPage(@Param("emp") Emp emp , @Param("current") int current , @Param("size") int size);
 
 
-    @Select("select sign.*,dept_name,name from day.sign " +
+    @Select("select sign.*,d.dept_name,e.name from day.sign " +
             "left join day.emp e on e.number = sign.number " +
             "left join day.department d on d.dept_id = e.dept_id  " +
             "where day.sign.number=#{emp.number} " +

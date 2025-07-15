@@ -42,6 +42,7 @@ public class SignController {
     //路径 daily-details GET String date
     @GetMapping("/daily-details")
     public RESP getDailyDetails(@RequestParam(name = "date") String date) {
+
         return signService.getDailyDetails(date);
     }
 

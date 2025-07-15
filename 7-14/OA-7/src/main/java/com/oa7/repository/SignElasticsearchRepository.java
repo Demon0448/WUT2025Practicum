@@ -11,7 +11,15 @@ import java.util.List;
 
 @Repository
 public interface SignElasticsearchRepository extends ElasticsearchRepository<Sign, String> {
-    
+
+    //TODO 新加的
+    /**
+     * 根据日期前缀查询所有记录（不分页）
+     */
+    @Query("{\"wildcard\": {\"signDate\": \"?0*\"}}")
+    List<Sign> findBySignDateStartsWith(String datePrefix);
+
+
     /**
      * 根据员工编号和日期查询打卡记录
      */

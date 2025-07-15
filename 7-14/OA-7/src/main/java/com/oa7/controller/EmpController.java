@@ -30,7 +30,6 @@ public class EmpController {
     @GetMapping("/employees/departments")
     @ResponseBody
     public RESP selectAllDept() {
-
         return empService.selectAllDept();
     }
 

@@ -8,6 +8,7 @@ import com.oa7.dao.SignDao;
 import com.oa7.pojo.Emp;
 import com.oa7.pojo.Sign;
 import com.oa7.pojo.SignCountDTO;
+import com.oa7.pojo.SignDetailDTO;
 import com.oa7.repository.SignElasticsearchRepository;
 import com.oa7.service.SignService;
 import com.oa7.util.DU;
@@ -48,13 +49,25 @@ public class SignServiceElasticsearchImpl implements SignService {
 
     @Override
     public RESP selectDaySignList(Integer currentPage, Integer pageSize) {
+
+////        TODO 临时测试
+//        //取出所有签到统计数据,全部存入 es
+//        List<Sign> tmp=signDao.selectAll();
+//        log.info("签到数据: {}", tmp);
+//        for(Sign sign:tmp){
+//            log.info("签到数据: {}", sign);
+//            signRepository.save(sign);
+//        }
+
+
         log.info("当前页: {}, 每页大小: {}", currentPage, pageSize);
         PageHelper.startPage(currentPage, pageSize, true);
         List<SignCountDTO> list = signDao.selectSignCountByDay();
         PageInfo<SignCountDTO> pageInfo = new PageInfo<>(list);
         log.info("查询到的签到统计数据: {}", list);
-        //TODO
-        // 这里可以根据业务需求进一步处理数据
+
+
+
         return RESP.ok(pageInfo.getList(), pageInfo.getPageNum(), (int) pageInfo.getTotal());
     }
 
@@ -243,32 +256,76 @@ public class SignServiceElasticsearchImpl implements SignService {
 
     @Override
     public RESP getStatisticsChart() {
-        // 得到最近十天的日期字符串
+
+
+        //mysql 实现版本
+
+//        // 得到最近十天的日期字符串
+//        String[] lastTenDays = new String[5];
+//        List<Integer> yesCountList = new ArrayList<>(); // 已签到人数
+//        List<Integer> noCountList = new ArrayList<>();  // 未签到人数
+//        List<Integer> totalList = new ArrayList<>();    // 需签到总人数
+//
+//
+//        for (int i = 0; i < 5; i++) {
+//            lastTenDays[i] = LocalDate.now().minusDays(i).toString();
+//
+//            SignCountDTO signCountDTO = signDao.selectByDay(lastTenDays[i]);
+//            log.info("查询到的签到统计数据: {}", signCountDTO);
+//
+//            if (signCountDTO != null) {
+//                yesCountList.add(signCountDTO.getYc());
+//                noCountList.add(signCountDTO.getNc());
+//                totalList.add(signCountDTO.getYc() + signCountDTO.getNc());
+//            } else {
+//                // 如果某天没有数据，默认值为0
+//                yesCountList.add(0);
+//                noCountList.add(0);
+//                totalList.add(0);
+//            }
+//        }
+//
+//        //TODO: 添加返回数据
+//        return RESP.ok(lastTenDays, yesCountList, noCountList, totalList);
+
+        //  elasticsearch 实现版本
+        // 获取今天的日期
+        String today = DU.getNowSortString();
+        // 获取最近5天的日期
         String[] lastTenDays = new String[5];
         List<Integer> yesCountList = new ArrayList<>(); // 已签到人数
-        List<Integer> noCountList = new ArrayList<>();  // 未签到人数
-        List<Integer> totalList = new ArrayList<>();    // 需签到总人数
-
-
+        List<Integer> noCountList = new ArrayList<>();
+        List<Integer> totalList = new ArrayList<>();
         for (int i = 0; i < 5; i++) {
-            lastTenDays[i] = LocalDate.now().minusDays(i).toString();
+            lastTenDays[i] =LocalDate.now().minusDays(i).toString();
+            //1 取出这一天签到记录
+            //mysql版本
+            //List<Sign> signList = signDao.selectByDate(lastTenDays[i]);
+            //elasticsearch版本
+            log.info("查询的日期: {}", lastTenDays[i]);
+            List<Sign> signList = signRepository.findByDateOnly(lastTenDays[i]);
+            log.info("查询到的签到数据: {}", signList);
 
-            SignCountDTO signCountDTO = signDao.selectByDay(lastTenDays[i]);
-            log.info("查询到的签到统计数据: {}", signCountDTO);
-
-            if (signCountDTO != null) {
-                yesCountList.add(signCountDTO.getYc());
-                noCountList.add(signCountDTO.getNc());
-                totalList.add(signCountDTO.getYc() + signCountDTO.getNc());
-            } else {
-                // 如果某天没有数据，默认值为0
-                yesCountList.add(0);
-                noCountList.add(0);
-                totalList.add(0);
+            // 如果没有签到记录，默认值为0
+            int yesCount = 0; // 已签到人数
+            int noCount = 0;
+            for(Sign sign : signList){
+                //签到并且是上午
+                if(sign.getType().equals("a")){
+                    if(sign.getState().equals("已签到")){
+                        yesCount++;
+                    } else{
+                        noCount++;
+                    }
+                }
             }
+            yesCountList.add(yesCount);
+            noCountList.add(noCount);
+            totalList.add(yesCount + noCount);
+            log.info("日期: {}, 已签到人数: {}, 未签到人数: {}, 总人数: {}", lastTenDays[i], yesCount, noCount, yesCount + noCount);
+
         }
 
-        //TODO: 添加返回数据
         return RESP.ok(lastTenDays, yesCountList, noCountList, totalList);
 
     }
@@ -276,8 +333,43 @@ public class SignServiceElasticsearchImpl implements SignService {
     @Override
     public RESP getDailyDetails(String date) {
         //TODO 先都使用mysql实现，后面再换成elasticsearch
-
-        return null;
+        SignDetailDTO  signDetailDTO = new SignDetailDTO();
+        int msc=0,muc=0,esc=0,euc=0,tsc=0,tuc=0;
+        //1 取出这一天签到记录
+        List<Sign> signList = signDao.selectByDate(date);
+        //2 查询这一天的签到记录，更新signDetailDTO
+        for(Sign sign : signList){
+            if(sign.getState().equals("已签到")){
+                if(sign.getType().equals("a")){
+                    // 上午签到
+                    msc++;
+                }else{
+                    // 下午签到
+                    esc++;
+                }
+                tsc++;
+            }else{
+                if(sign.getType().equals("a")){
+                    // 上午未签到
+                    muc++;
+                }else{
+                    // 下午未签到
+                    euc++;
+                }
+                tuc++;
+            }
+        }
+        //3 设置signDetailDTO
+        signDetailDTO.setDate(date);
+        signDetailDTO.setMorningSignedCount(msc);
+        signDetailDTO.setMorningUnsignedCount(muc);
+        signDetailDTO.setEveningSignedCount(esc);
+        signDetailDTO.setEveningUnsignedCount(euc);
+        signDetailDTO.setTotalSignedCount(tsc);
+        signDetailDTO.setTotalUnsignedCount(tuc);
+        log.info("返回的签到统计数据: {}", signDetailDTO);
+        //返回signDetailDTO
+        return RESP.ok(signDetailDTO);
     }
 
     @Override
