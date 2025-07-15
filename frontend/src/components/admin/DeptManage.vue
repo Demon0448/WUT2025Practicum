@@ -9,23 +9,23 @@
 
     <!-- 数据展现表格 -->
     <el-table :data="tableData" v-loading="loading">
-      <el-table-column 
-        label="部门序号" 
-        prop="dept_id" 
-        min-width="130" 
-        align="center" 
+      <el-table-column
+        label="部门序号"
+        prop="dept_id"
+        min-width="130"
+        align="center"
       />
-      <el-table-column 
-        label="部门名" 
-        prop="dept_name" 
-        min-width="150" 
-        align="center" 
+      <el-table-column
+        label="部门名"
+        prop="dept_name"
+        min-width="150"
+        align="center"
       />
-      <el-table-column 
-        label="部门人数" 
-        prop="dept_num" 
-        min-width="130" 
-        align="center" 
+      <el-table-column
+        label="部门人数"
+        prop="dept_num"
+        min-width="130"
+        align="center"
       />
       <el-table-column label="操作" min-width="160" align="center">
         <template #default="{ row }">
@@ -47,23 +47,23 @@
     />
 
     <!-- 添加部门对话框 -->
-    <el-dialog 
-      v-model="dialogVisible.add" 
-      @close="resetForm('addForm')" 
+    <el-dialog
+      v-model="dialogVisible.add"
+      @close="resetForm('addForm')"
       title="添加部门信息"
       width="400px"
     >
-      <el-form 
-        :model="formData" 
-        :rules="rules" 
-        ref="addFormRef" 
+      <el-form
+        :model="formData"
+        :rules="rules"
+        ref="addFormRef"
         label-width="100px"
       >
         <el-form-item label="部门名" prop="dept_name">
           <el-input v-model="formData.dept_name" />
         </el-form-item>
       </el-form>
-      
+
       <template #footer>
         <el-button @click="addDept" type="primary" :loading="adding">添加</el-button>
         <el-button @click="resetForm('addForm')">重置</el-button>
@@ -71,16 +71,16 @@
     </el-dialog>
 
     <!-- 编辑部门对话框 -->
-    <el-dialog 
-      v-model="dialogVisible.edit" 
-      @close="resetForm('editForm')" 
+    <el-dialog
+      v-model="dialogVisible.edit"
+      @close="resetForm('editForm')"
       title="编辑部门信息"
       width="400px"
     >
-      <el-form 
-        :model="editFormData" 
-        :rules="rules" 
-        ref="editFormRef" 
+      <el-form
+        :model="editFormData"
+        :rules="rules"
+        ref="editFormRef"
         label-width="100px"
       >
         <el-form-item label="部门序号" prop="dept_id">
@@ -90,7 +90,7 @@
           <el-input v-model="editFormData.dept_name" />
         </el-form-item>
       </el-form>
-      
+
       <template #footer>
         <el-button type="warning" @click="updateDept" :loading="updating">修改</el-button>
       </template>
@@ -149,7 +149,7 @@ const selectAllDeptAndNum = async () => {
         pageSize: pagination.pageSize
       }
     })
-    
+
     if (response.data && response.data.data) {
       tableData.value = response.data.data || []
       pagination.total = response.data.total || 0
@@ -181,16 +181,16 @@ const showAddDept = () => {
 
 const addDept = async () => {
   if (!addFormRef.value) return
-  
+
   try {
     const valid = await addFormRef.value.validate()
     if (!valid) return
-    
+
     adding.value = true
     const deptData = {
       dept_name: formData.dept_name
     }
-    const response = await axios.post('/api/v1/admin/departments', deptData, {
+    const response = await axios.post('/api/v1/admin/departments/add', deptData, {
       params: {
         currentPage: pagination.currentPage,
         pageSize: pagination.pageSize
@@ -199,7 +199,7 @@ const addDept = async () => {
         'Content-Type': 'application/json'
       }
     })
-    
+
     if (response.data && response.data.data) {
       tableData.value = response.data.data || []
       pagination.total = response.data.total || 0
@@ -228,11 +228,11 @@ const showEditDept = (row: any) => {
 
 const updateDept = async () => {
   if (!editFormRef.value) return
-  
+
   try {
     const valid = await editFormRef.value.validate()
     if (!valid) return
-    
+
     updating.value = true
     const deptData = {
       dept_name: editFormData.dept_name
@@ -246,7 +246,7 @@ const updateDept = async () => {
         'Content-Type': 'application/json'
       }
     })
-    
+
     if (response.data && response.data.data) {
       tableData.value = response.data.data || []
       pagination.total = response.data.total || 0
@@ -299,4 +299,4 @@ onMounted(() => {
   color: red;
   font-size: 20px;
 }
-</style> 
+</style>

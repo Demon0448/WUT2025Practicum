@@ -9,23 +9,23 @@
 
     <!-- 数据展现表格 -->
     <el-table :data="tableData" v-loading="loading">
-      <el-table-column 
-        label="职务序号" 
-        prop="duty_id" 
-        min-width="130" 
-        align="center" 
+      <el-table-column
+        label="职务序号"
+        prop="duty_id"
+        min-width="130"
+        align="center"
       />
-      <el-table-column 
-        label="职务名" 
-        prop="duty_name" 
-        min-width="150" 
-        align="center" 
+      <el-table-column
+        label="职务名"
+        prop="duty_name"
+        min-width="150"
+        align="center"
       />
-      <el-table-column 
-        label="职务人数" 
-        prop="duty_num" 
-        min-width="130" 
-        align="center" 
+      <el-table-column
+        label="职务人数"
+        prop="duty_num"
+        min-width="130"
+        align="center"
       />
       <el-table-column label="操作" min-width="160" align="center">
         <template #default="{ row }">
@@ -47,23 +47,23 @@
     />
 
     <!-- 添加职务对话框 -->
-    <el-dialog 
-      v-model="dialogVisible.add" 
-      @close="resetForm('addForm')" 
+    <el-dialog
+      v-model="dialogVisible.add"
+      @close="resetForm('addForm')"
       title="添加职务信息"
       width="400px"
     >
-      <el-form 
-        :model="formData" 
-        :rules="rules" 
-        ref="addFormRef" 
+      <el-form
+        :model="formData"
+        :rules="rules"
+        ref="addFormRef"
         label-width="100px"
       >
         <el-form-item label="职务名" prop="duty_name">
           <el-input v-model="formData.duty_name" />
         </el-form-item>
       </el-form>
-      
+
       <template #footer>
         <el-button @click="addDuty" type="primary" :loading="adding">添加</el-button>
         <el-button @click="resetForm('addForm')">重置</el-button>
@@ -71,16 +71,16 @@
     </el-dialog>
 
     <!-- 编辑职务对话框 -->
-    <el-dialog 
-      v-model="dialogVisible.edit" 
-      @close="resetForm('editForm')" 
+    <el-dialog
+      v-model="dialogVisible.edit"
+      @close="resetForm('editForm')"
       title="编辑职务信息"
       width="400px"
     >
-      <el-form 
-        :model="editFormData" 
-        :rules="rules" 
-        ref="editFormRef" 
+      <el-form
+        :model="editFormData"
+        :rules="rules"
+        ref="editFormRef"
         label-width="100px"
       >
         <el-form-item label="职务序号" prop="duty_id">
@@ -90,7 +90,7 @@
           <el-input v-model="editFormData.duty_name" />
         </el-form-item>
       </el-form>
-      
+
       <template #footer>
         <el-button type="warning" @click="updateDuty" :loading="updating">修改</el-button>
       </template>
@@ -143,10 +143,24 @@ const rules = {
 const selectAllDutyAndNum = async () => {
   loading.value = true
   try {
-    const response = await axios.get('/api/v1/admin/duties')
-    
+
+    // const response = await axios.get('/api/v1/admin/departments', {
+    //   params: {
+    //     currentPage: pagination.currentPage,
+    //     pageSize: pagination.pageSize
+    //   }
+    // })
+    const response = await axios.get('/api/v1/admin/duties', {
+      params: {
+        currentPage: pagination.currentPage,
+        pageSize: pagination.pageSize
+      }
+    })
+
     if (response.data && response.data.data) {
       tableData.value = response.data.data || []
+      pagination.total = response.data.total || 0
+
     } else {
       ElMessage.error('获取职务列表失败')
     }
@@ -177,12 +191,12 @@ const addDuty = async () => {
     const dutyData = {
       duty_name: formData.duty_name
     }
-    const response = await axios.post('/api/v1/admin/duties', dutyData, {
+    const response = await axios.post('/api/v1/admin/duties/add', dutyData, {
       headers: {
         'Content-Type': 'application/json'
       }
     })
-    
+
     if (response.data === 'true' || response.data === true || (response.data && response.data.data)) {
       ElMessage.success('添加职务成功')
       dialogVisible.add = false
@@ -215,7 +229,7 @@ const updateDuty = async () => {
         'Content-Type': 'application/json'
       }
     })
-    
+
     if (response.data === 'true' || response.data === true || (response.data && response.data.data)) {
       ElMessage.success('更新职务成功')
       dialogVisible.edit = false
@@ -263,4 +277,4 @@ onMounted(() => {
 .page-title {
   color: red;
 }
-</style> 
+</style>

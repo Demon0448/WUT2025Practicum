@@ -6,7 +6,7 @@
         <span class="header-text">后台管理</span>
       </div>
     </div>
-    
+
     <div class="dashboard-content">
       <el-row :gutter="20">
         <el-col :span="6">
@@ -22,7 +22,7 @@
             </div>
           </el-card>
         </el-col>
-        
+
         <el-col :span="6">
           <el-card class="stat-card" v-loading="loading">
             <div class="stat-item">
@@ -36,7 +36,7 @@
             </div>
           </el-card>
         </el-col>
-        
+
         <el-col :span="6">
           <el-card class="stat-card" v-loading="loading">
             <div class="stat-item">
@@ -50,7 +50,7 @@
             </div>
           </el-card>
         </el-col>
-        
+
         <el-col :span="6">
           <el-card class="stat-card" v-loading="loading">
             <div class="stat-item">
@@ -65,7 +65,7 @@
           </el-card>
         </el-col>
       </el-row>
-      
+
       <el-row :gutter="20" style="margin-top: 20px;">
         <el-col :span="12">
           <el-card>
@@ -73,29 +73,29 @@
               <span>快速导航</span>
             </template>
             <div class="quick-nav">
-              <el-button 
-                type="primary" 
+              <el-button
+                type="primary"
                 @click="$router.push('/admin-home/emp-list')"
                 :icon="User"
               >
                 员工管理
               </el-button>
-              <el-button 
-                type="success" 
+              <el-button
+                type="success"
                 @click="$router.push('/admin-home/dept-manage')"
                 :icon="OfficeBuilding"
               >
                 部门管理
               </el-button>
-              <el-button 
-                type="warning" 
+              <el-button
+                type="warning"
                 @click="$router.push('/admin-home/duty-manage')"
                 :icon="Briefcase"
               >
                 职务管理
               </el-button>
-              <el-button 
-                type="info" 
+              <el-button
+                type="info"
                 @click="$router.push('/admin-home/sign-list')"
                 :icon="Clock"
               >
@@ -104,7 +104,7 @@
             </div>
           </el-card>
         </el-col>
-        
+
         <el-col :span="12">
           <el-card>
             <template #header>
@@ -152,25 +152,26 @@ const loadStats = async () => {
   try {
     // 并行获取各种统计数据
     const [employeesRes, departmentsRes, dutiesRes, todaySignedRes] = await Promise.all([
-      axios.get('/api/v1/admin/employees', { params: { currentPage: 1, pageSize: 1 } }),
-      axios.get('/api/v1/admin/departments'),
-      axios.get('/api/v1/admin/duties'),
-      axios.get('/api/v1/admin/attendance/today/signed', { params: { currentPage: 1, pageSize: 1 } })
+      axios.get('/api/v1/admin/employees', { params: { currentPage: -1, pageSize: -1 } }),
+      axios.get('/api/v1/admin/departments', { params: { currentPage: -1, pageSize: -1 } }),
+      axios.get('/api/v1/admin/duties', { params: { currentPage: -1, pageSize: -1 } }),
+      axios.get('/api/v1/admin/attendance/today/signed', { params: { currentPage: -1, pageSize: -1 } })
     ])
 
+    //TODO  前端更改
     // 员工总数
     if (employeesRes.data && employeesRes.data.total !== undefined) {
       stats.employeeCount = employeesRes.data.total
     }
 
     // 部门数量
-    if (departmentsRes.data && departmentsRes.data.data) {
-      stats.departmentCount = departmentsRes.data.data.length
+    if (departmentsRes.data && departmentsRes.data.total) {
+      stats.departmentCount = departmentsRes.data.total
     }
 
     // 职务数量
-    if (dutiesRes.data && dutiesRes.data.data) {
-      stats.dutyCount = dutiesRes.data.data.length
+    if (dutiesRes.data && dutiesRes.data.total) {
+      stats.dutyCount = dutiesRes.data.total
     }
 
     // 今日签到人数
@@ -305,4 +306,4 @@ onUnmounted(() => {
   margin: 10px 0;
   color: #606266;
 }
-</style> 
+</style>

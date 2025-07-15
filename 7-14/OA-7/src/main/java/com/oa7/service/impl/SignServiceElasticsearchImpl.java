@@ -1,14 +1,19 @@
 package com.oa7.service.impl;
 
 
+import com.github.pagehelper.PageHelper;
+import com.github.pagehelper.PageInfo;
 import com.oa7.dao.EmpDao;
+import com.oa7.dao.SignDao;
 import com.oa7.pojo.Emp;
 import com.oa7.pojo.Sign;
+import com.oa7.pojo.SignCountDTO;
 import com.oa7.repository.SignElasticsearchRepository;
 import com.oa7.service.SignService;
 import com.oa7.util.DU;
 import com.oa7.util.LocationUtil;
 import com.oa7.util.RESP;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -17,21 +22,41 @@ import org.springframework.stereotype.Service;
 
 import javax.servlet.http.HttpSession;
 import java.text.SimpleDateFormat;
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import java.util.UUID;
 
 @Service
+@Slf4j
 public class SignServiceElasticsearchImpl implements SignService {
+
+
+    //TODO 先用mysql实现，后面再换成elasticsearch
 
     @Autowired
     private SignElasticsearchRepository signRepository;
 
     @Autowired
+    private SignDao signDao;
+
+    @Autowired
     private EmpDao empDao;
 
     private final SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
+
+    @Override
+    public RESP selectDaySignList(Integer currentPage, Integer pageSize) {
+        log.info("当前页: {}, 每页大小: {}", currentPage, pageSize);
+        PageHelper.startPage(currentPage, pageSize, true);
+        List<SignCountDTO> list = signDao.selectSignCountByDay();
+        PageInfo<SignCountDTO> pageInfo = new PageInfo<>(list);
+        log.info("查询到的签到统计数据: {}", list);
+        //TODO
+        // 这里可以根据业务需求进一步处理数据
+        return RESP.ok(pageInfo.getList(), pageInfo.getPageNum(), (int) pageInfo.getTotal());
+    }
 
     // 获取当前员工签到记录
     @Override
@@ -113,36 +138,26 @@ public class SignServiceElasticsearchImpl implements SignService {
 
 
 
+    //TODO 弃用
+
     @Override
     public RESP selectByPagehelper(int currentPage, int pageSize, HttpSession session) {
-        return selectByPage(currentPage, pageSize, session);
+        return null;
     }
 
-    //分页查询员工已签到记录
+    //分页查询员工已签到记录 TODO 大动刀
     @Override
-    public RESP selectByPage(int currentPage, int pageSize, HttpSession session) {
-        // 1. 查询当前员工信息
-        Emp emp = (Emp) session.getAttribute("emp");
-        if (emp == null) {
-            return RESP.error("用户未登录");
-        }
+    public RESP selectByPage(int currentPage, int pageSize) {
+
         // 2. 使用 Elasticsearch 分页查询
         Pageable pageable = PageRequest.of(currentPage - 1, pageSize);
-        Page<Sign> page = signRepository.findByNumberOrderByTimestampDesc(emp.getNumber(), pageable);
+        Page<Sign> page = signRepository.findAllByOrderByTimestampDesc(pageable);
 
-        //测试Page集合中数据 例如： 员工编号: 145, 签到时间: 2025-07-02 09:43:25:913, 状态: 已签到 ......
         List<Sign> list = page.getContent();
-        for (int i = 0; i <list.size(); i++) {
-            System.out.println("员工编号: " + list.get(0).getNumber() +
-                               " 签到时间: " + list.get(0).getSignDate() +
-                               " 状态: " + list.get(0).getState());
-        }
-
         // 补充员工信息(补充对应的部门信息)
         list = AddEmpInfo(list);
         // 获取总条数
-        long total = signRepository.countByNumber(emp.getNumber());
-
+        long total = signRepository.count();
         return RESP.ok(list,currentPage, (int) total);
     }
 
@@ -224,5 +239,55 @@ public class SignServiceElasticsearchImpl implements SignService {
             e.printStackTrace();
             return RESP.error("签到失败：" + e.getMessage());
         }
+    }
+
+    @Override
+    public RESP getStatisticsChart() {
+        // 得到最近十天的日期字符串
+        String[] lastTenDays = new String[5];
+        List<Integer> yesCountList = new ArrayList<>(); // 已签到人数
+        List<Integer> noCountList = new ArrayList<>();  // 未签到人数
+        List<Integer> totalList = new ArrayList<>();    // 需签到总人数
+
+
+        for (int i = 0; i < 5; i++) {
+            lastTenDays[i] = LocalDate.now().minusDays(i).toString();
+
+            SignCountDTO signCountDTO = signDao.selectByDay(lastTenDays[i]);
+            log.info("查询到的签到统计数据: {}", signCountDTO);
+
+            if (signCountDTO != null) {
+                yesCountList.add(signCountDTO.getYc());
+                noCountList.add(signCountDTO.getNc());
+                totalList.add(signCountDTO.getYc() + signCountDTO.getNc());
+            } else {
+                // 如果某天没有数据，默认值为0
+                yesCountList.add(0);
+                noCountList.add(0);
+                totalList.add(0);
+            }
+        }
+
+        //TODO: 添加返回数据
+        return RESP.ok(lastTenDays, yesCountList, noCountList, totalList);
+
+    }
+
+    @Override
+    public RESP getDailyDetails(String date) {
+        //TODO 先都使用mysql实现，后面再换成elasticsearch
+
+        return null;
+    }
+
+    @Override
+    public RESP getTodaySigned() {
+        // 获取今天的日期
+        String today = DU.getNowSortString();
+        log.info("获取今天的签到记录，日期: {}", today);
+        // 查询今天的签到记录数量 mysql
+        List<Sign> list=signDao.selectYesTargetDayByPage(today);
+
+        return RESP.ok(null,-1, (int) list.size());
     }
 }

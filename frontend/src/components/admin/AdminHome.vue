@@ -11,7 +11,7 @@
           </div>
         </div>
       </el-header>
-      
+
       <el-container>
         <!-- 侧边栏 -->
         <el-aside width="200px">
@@ -42,13 +42,33 @@
               <el-icon><Clock /></el-icon>
               <span>考勤管理</span>
             </el-menu-item>
+
             <el-menu-item index="/admin-home/sign-statistics">
               <el-icon><PieChart /></el-icon>
               <span>考勤统计</span>
             </el-menu-item>
+
+<!--            还有signed-list 先不可选中-->
+<!--            <el-menu-item index="/admin-home/signed-list">-->
+<!--              <el-icon><Clock /></el-icon>-->
+<!--              <span>已签到</span>-->
+<!--            </el-menu-item>-->
+<!--            signed-list-->
+            <el-menu-item index="/admin-home/signed-list" disabled>
+              <el-icon><Clock /></el-icon>
+              <span>已签到</span>
+            </el-menu-item>
+
+<!--            unsigned-list-->
+            <el-menu-item index="/admin-home/unsigned-list">
+              <el-icon><Clock /></el-icon>
+              <span>未签到</span>
+            </el-menu-item>
+
+
           </el-menu>
         </el-aside>
-        
+
         <!-- 主内容区 -->
         <el-main>
           <router-view />
@@ -62,13 +82,13 @@
 import { ref, onMounted } from 'vue'
 import { useRouter } from 'vue-router'
 import { ElMessage, ElMessageBox } from 'element-plus'
-import { 
-  Odometer, 
-  User, 
-  OfficeBuilding, 
-  Briefcase, 
-  Clock, 
-  PieChart 
+import {
+  Odometer,
+  User,
+  OfficeBuilding,
+  Briefcase,
+  Clock,
+  PieChart
 } from '@element-plus/icons-vue'
 import axios from 'axios'
 
@@ -102,7 +122,7 @@ const logout = async () => {
         type: 'warning',
       }
     )
-    
+
     // 用户确认后执行logout
     try {
       const response = await axios.post('/api/v1/admin/auth/logout')
@@ -185,4 +205,4 @@ const logout = async () => {
   height: 100%;
   overflow-y: auto;
 }
-</style> 
+</style>

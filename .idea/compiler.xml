@@ -15,6 +15,7 @@
         <module name="OA-1 (1)" />
         <module name="OA-3 (2)" />
         <module name="gateway" />
+        <module name="OA-3 (3)" />
       </profile>
     </annotationProcessing>
     <bytecodeTargetLevel>

@@ -21,7 +21,10 @@ public class InterceptorConfig implements WebMvcConfigurer {
         registry.addInterceptor(loginInterceptor())
                 .excludePathPatterns("/")
                 .excludePathPatterns("/login")          // 员工登录接口
+                .excludePathPatterns("/auth/login")     // 管理员登录接口
                 .excludePathPatterns("/logout")         // 员工退出登录接口
+                .excludePathPatterns("/auth/logout")    // 管理员退出登录接口
+                .excludePathPatterns("/auth/register")       // 员工注册接口
                 .excludePathPatterns("/static/**");
     }
 

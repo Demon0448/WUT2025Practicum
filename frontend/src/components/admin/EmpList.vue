@@ -8,8 +8,8 @@
     </div>
 
     <!-- 数据展现表格 -->
-    <el-table 
-      :data="filteredTableData" 
+    <el-table
+      :data="filteredTableData"
       v-loading="loading"
     >
       <el-table-column align="center">
@@ -24,7 +24,7 @@
             />
           </div>
         </template>
-        
+
         <el-table-column align="center" label="工号" min-width="120" prop="number" />
         <el-table-column align="center" label="姓名" min-width="120" prop="name" />
         <el-table-column align="center" label="生日" min-width="140" prop="birthday" />
@@ -53,16 +53,16 @@
     />
 
     <!-- 添加员工对话框 -->
-    <el-dialog 
-      v-model="dialogVisible.add" 
-      @close="resetForm('addForm')" 
+    <el-dialog
+      v-model="dialogVisible.add"
+      @close="resetForm('addForm')"
       title="添加员工信息"
       width="500px"
     >
-      <el-form 
-        :model="formData" 
-        :rules="rules" 
-        ref="addFormRef" 
+      <el-form
+        :model="formData"
+        :rules="rules"
+        ref="addFormRef"
         label-width="100px"
       >
         <el-form-item label="员工姓名" prop="name">
@@ -95,7 +95,7 @@
           </el-select>
         </el-form-item>
       </el-form>
-      
+
       <template #footer>
         <el-button type="primary" @click="addEmp" :loading="adding">添加</el-button>
         <el-button @click="resetForm('addForm')">重置</el-button>
@@ -103,16 +103,16 @@
     </el-dialog>
 
     <!-- 编辑员工对话框 -->
-    <el-dialog 
-      v-model="dialogVisible.edit" 
-      @close="resetForm('editForm')" 
+    <el-dialog
+      v-model="dialogVisible.edit"
+      @close="resetForm('editForm')"
       title="编辑员工信息"
       width="500px"
     >
-      <el-form 
-        :model="editFormData" 
-        :rules="rules" 
-        ref="editFormRef" 
+      <el-form
+        :model="editFormData"
+        :rules="rules"
+        ref="editFormRef"
         label-width="100px"
       >
         <el-form-item label="员工工号" prop="number">
@@ -148,7 +148,7 @@
           </el-select>
         </el-form-item>
       </el-form>
-      
+
       <template #footer>
         <el-button @click="updateEmp" type="warning" :loading="updating">修改</el-button>
       </template>
@@ -240,7 +240,7 @@ const rules = {
 
 const filteredTableData = computed(() => {
   if (!searchUsers.value) return tableData.value
-  return tableData.value.filter(data => 
+  return tableData.value.filter(data =>
     data.name.toLowerCase().includes(searchUsers.value.toLowerCase())
   )
 })
@@ -254,7 +254,7 @@ const selectByPage = async () => {
         pageSize: pagination.pageSize
       }
     })
-    
+
     if (response.data && response.data.data) {
       tableData.value = response.data.data || []
       pagination.total = response.data.total || 0
@@ -281,14 +281,23 @@ const handleCurrentChange = (pageNum: number) => {
 
 const showAddEmp = async () => {
   try {
+    // const response = await axios.get('/api/v1/admin/departments', {
+    //   params: {
+    //     currentPage: pagination.currentPage,
+    //     pageSize: pagination.pageSize
+    //   }
+    // })
+
+
+
     // 获取部门数据
     const deptResponse = await axios.get('/api/v1/admin/employees/departments')
     deptData.value = deptResponse.data.data || []
-    
+
     // 获取职务数据
     const dutyResponse = await axios.get('/api/v1/admin/employees/duties')
     dutyData.value = dutyResponse.data.data || []
-    
+
     dialogVisible.add = true
   } catch (error) {
     console.error('获取部门职务数据失败:', error)
@@ -302,11 +311,11 @@ const getDeptAndDutyData = async () => {
       axios.get('/api/v1/admin/employees/departments'),
       axios.get('/api/v1/admin/employees/duties')
     ])
-    
+
     if (deptResponse.data && deptResponse.data.data) {
       deptData.value = deptResponse.data.data || []
     }
-    
+
     if (dutyResponse.data && dutyResponse.data.data) {
       dutyData.value = dutyResponse.data.data || []
     }
@@ -318,11 +327,11 @@ const getDeptAndDutyData = async () => {
 
 const addEmp = async () => {
   if (!addFormRef.value) return
-  
+
   try {
     const valid = await addFormRef.value.validate()
     if (!valid) return
-    
+
     const empData = {
       name: formData.name,
       birthday: formData.birthday,
@@ -330,12 +339,12 @@ const addEmp = async () => {
       dept_id: formData.dept_id,
       duty_id: formData.duty_id
     }
-    const response = await axios.post('/api/v1/admin/employees', empData, {
+    const response = await axios.post('/api/v1/admin/employees/add', empData, {
       headers: {
         'Content-Type': 'application/json'
       }
     })
-    
+
     if (response.data === 'true' || response.data === true || (response.data && response.data.data)) {
       ElMessage.success('添加员工成功')
       dialogVisible.add = false
@@ -355,11 +364,11 @@ const showEditEmp = async (row: any) => {
     // 获取部门数据
     const deptResponse = await axios.get('/api/v1/admin/employees/departments')
     deptData.value = deptResponse.data.data || []
-    
+
     // 获取职务数据
     const dutyResponse = await axios.get('/api/v1/admin/employees/duties')
     dutyData.value = dutyResponse.data.data || []
-    
+
     // 设置表单数据
     Object.assign(editFormData, {
       number: row.number,
@@ -371,7 +380,7 @@ const showEditEmp = async (row: any) => {
       dept_name: row.dept_name,
       duty_name: row.duty_name
     })
-    
+
     dialogVisible.edit = true
   } catch (error) {
     console.error('获取部门职务数据失败:', error)
@@ -381,11 +390,11 @@ const showEditEmp = async (row: any) => {
 
 const updateEmp = async () => {
   if (!editFormRef.value) return
-  
+
   try {
     const valid = await editFormRef.value.validate()
     if (!valid) return
-    
+
     updating.value = true
     const empData = {
       name: editFormData.name,
@@ -403,7 +412,7 @@ const updateEmp = async () => {
         'Content-Type': 'application/json'
       }
     })
-    
+
     if (response.data && response.data.data) {
       tableData.value = response.data.data || []
       pagination.total = response.data.total || 0
@@ -430,7 +439,7 @@ const deleteEmp = async () => {
   deleting.value = true
   try {
     const response = await axios.delete(`/api/v1/admin/employees/${currentEmp.value.number}`)
-    
+
     if (response.data === 'true' || response.data === true || (response.data && response.data.data)) {
       ElMessage.success('删除员工成功')
       selectByPage()
@@ -496,4 +505,4 @@ onMounted(() => {
   display: flex;
   align-items: center;
 }
-</style> 
+</style>

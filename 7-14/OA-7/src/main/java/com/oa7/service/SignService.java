@@ -9,11 +9,14 @@ import javax.servlet.http.HttpSession;
 
 public interface SignService {
 
+    RESP selectDaySignList(Integer currentPage, Integer pageSize);
+
+
     //查找员工今日签到任务
     public RESP empSignList(HttpSession session);
 
-    //分页查询
-    public RESP selectByPage(int currentPage,int pageSize,HttpSession session);
+    //分页查询   TODO 先等等
+    public RESP selectByPage(int currentPage,int pageSize);
 
     //使用pagehelper实现用户签到分页查询
     public RESP selectByPagehelper(int currentPage,int pageSize,HttpSession session);
@@ -22,9 +25,10 @@ public interface SignService {
     RESP updateState(Sign sign , HttpSession session, String cor);
 
 
+    RESP getStatisticsChart();
 
+    RESP getDailyDetails(String date);
 
-
-
+    RESP getTodaySigned();
 
 }

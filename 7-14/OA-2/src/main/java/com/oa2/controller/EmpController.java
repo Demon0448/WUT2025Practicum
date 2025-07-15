@@ -3,9 +3,11 @@ package com.oa2.controller;
 import com.oa2.service.EmpService;
 import com.oa2.pojo.Emp;
 import com.oa2.util.RESP;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
+import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 
 /**
@@ -14,6 +16,7 @@ import javax.servlet.http.HttpSession;
 @RestController
 @RequestMapping
 @CrossOrigin
+@Slf4j
 public class EmpController {
 
     @Autowired
@@ -23,7 +26,11 @@ public class EmpController {
      * 员工登录
      */
     @PostMapping("/login")
-    public String login(@RequestBody Emp emp, HttpSession session) {
+    public String login(@RequestBody Emp emp, HttpSession session, HttpServletRequest request) {
+
+        //打印http完整请求路径
+        log.info("请求路径：{}" , request.getRequestURI());
+
         return empService.emplogin(emp, session);
     }
 

@@ -1,9 +1,7 @@
 package com.oa7.dao;
 
 import com.oa7.pojo.Emp;
-import org.apache.ibatis.annotations.Mapper;
-import org.apache.ibatis.annotations.Select;
-import org.apache.ibatis.annotations.Update;
+import org.apache.ibatis.annotations.*;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
@@ -36,4 +34,25 @@ public interface EmpDao {
     @Select("select number from day.emp")
     List<Integer> selectAllEmpNumber();
 
+
+    @Select("select emp.*,dept_name,duty_name from " +
+            "day.emp left join department on department.dept_id = emp.dept_id " +
+            "left join duty on emp.duty_id = duty.duty_id order by number ")
+    List<Emp> selectByPageHelper();
+
+
+    //添加员工
+    @Insert("insert into day.emp (name, birthday, address, dept_id, duty_id) VALUES (#{name} ,#{birthday} ,#{address} ,#{dept_id} ,#{duty_id}  )")
+    int addEmp(Emp emp);
+
+    @Select("select * from day.emp where name=#{name}   ")
+    Emp selectByName(Emp emp);
+
+    //删除员工信息
+    @Delete("delete from day.emp where number=#{number} ")
+    int deleteEmpByNumber(Emp emp);
+
+    //统计员工数量
+    @Select("select count(*) from day.emp")
+    int countEmp();
 }

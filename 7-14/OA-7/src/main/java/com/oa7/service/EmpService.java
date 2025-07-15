@@ -18,4 +18,20 @@ public interface EmpService {
     //修改用户
     public RESP updateInfo(Emp emp, HttpSession session);
 
+    RESP selectByPage(int currentPage, int pageSize);
+
+    RESP selectTodaySigned(int currentPage, int pageSize);
+
+
+
+
+    RESP selectAllDept();
+
+    RESP selectAllDuty();
+
+    RESP addEmp(Emp emp);
+
+    RESP updateEmp(Emp emp, Integer currentPage, Integer pageSize);
+
+    RESP deleteEmp(int number);
 }

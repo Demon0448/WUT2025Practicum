@@ -20,45 +20,58 @@ public class EmpController {
     @Autowired
     private EmpService empService;
 
-    /**
-     * 员工登录
-     */
-    @PostMapping("/login")
-    public String login(@RequestBody Emp emp, HttpSession session) {
-        return empService.emplogin(emp, session);
+    //根据page查询用户信息
+    @GetMapping("/employees")
+    @ResponseBody
+    public RESP selectByPage(@RequestParam(name = "currentPage") String currentPage , @RequestParam(name = "pageSize") String pageSize) {
+        return empService.selectByPage(Integer.parseInt(currentPage) , Integer.parseInt(pageSize));
+    }
+    //路径 employees/departments GET
+    @GetMapping("/employees/departments")
+    @ResponseBody
+    public RESP selectAllDept() {
+
+        return empService.selectAllDept();
     }
 
-    /**
-     * 获取当前登录员工信息
-     */
-    @GetMapping("/profile")
-    public RESP getProfile(HttpSession session) {
-        Emp emp = (Emp) session.getAttribute("emp");
-        return RESP.ok(emp);
+
+    //路径 /employees/duties GET
+    @GetMapping("/employees/duties")
+    @ResponseBody
+    public RESP selectAllDuty() {
+        return empService.selectAllDuty();
     }
 
-    /**
-     * 更新员工密码
-     */
-    @PutMapping("/password")
-    public String updatePassword(@RequestBody Emp emp, @RequestParam("oldPassword") String oldPassword) {
-        return empService.updateEmpPwd(emp, oldPassword);
+    @PostMapping("/employees/add")
+    @ResponseBody
+    public RESP addEmp(@RequestBody Emp emp){
+        return empService.addEmp(emp);
     }
 
-    /**
-     * 更新员工个人信息
-     */
-    @PutMapping("/profile")
-    public RESP updateProfile(@RequestBody Emp emp, HttpSession session) {
-        return empService.updateInfo(emp, session);
+
+//    const response = await axios.put(`/api/v1/admin/employees/${editFormData.number}`, empData, {
+//        params: {
+//            currentPage: pagination.currentPage,
+//                    pageSize: pagination.pageSize
+//        },
+//        headers: {
+//            'Content-Type': 'application/json'
+//        }
+//    })
+
+    //路径 /employees/{number} PUT
+    @PutMapping("/employees/{number}")
+    @ResponseBody
+    public RESP updateEmp(@PathVariable("number") String number, @RequestBody Emp emp,Integer currentPage, Integer pageSize) {
+        emp.setNumber(Integer.parseInt(number));
+        return empService.updateEmp(emp, currentPage, pageSize);
     }
 
-    /**
-     * 员工退出登录
-     */
-    @PostMapping("/logout")
-    public RESP logout(HttpSession session) {
-        session.removeAttribute("emp");
-        return RESP.ok("退出登录成功");
+    //路径 /employees/{number} DELETE
+    @DeleteMapping("/employees/{number}")
+    @ResponseBody
+    public RESP deleteEmp(@PathVariable("number") String number) {
+        return empService.deleteEmp(Integer.parseInt(number));
     }
+
 }

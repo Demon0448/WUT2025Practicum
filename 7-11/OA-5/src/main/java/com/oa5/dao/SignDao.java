@@ -31,8 +31,8 @@ public interface SignDao {
             "COUNT(CASE WHEN state = '已签到' AND type = 'a' THEN 1 END) AS countYes, " +
             "COUNT(CASE WHEN state = '未签到' AND type = 'a' THEN 1 END) AS countNo " +
             "FROM day.sign " +
-            "GROUP BY signDay " +
-            "ORDER BY signDay DESC")
+            "GROUP BY signDate " +
+            "ORDER BY signDate DESC")
     List<SignCountDTO> selectSignCountByDay();
 
     //查询今日已签到的员工的考勤信息 不要limit

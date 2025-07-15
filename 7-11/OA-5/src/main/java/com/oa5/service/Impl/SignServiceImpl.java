@@ -25,11 +25,15 @@ public class SignServiceImpl implements SignService {
 
     @Override
     public RESP selectDaySignList(Integer currentPage, Integer pageSize) {
+
         log.info("当前页: {}, 每页大小: {}", currentPage, pageSize);
+
         PageHelper.startPage(currentPage, pageSize, true);
         List<SignCountDTO> list = signDao.selectSignCountByDay();
         PageInfo<SignCountDTO> pageInfo = new PageInfo<>(list);
+
         log.info("查询到的签到统计数据: {}", list);
+
         //TODO
         // 这里可以根据业务需求进一步处理数据
         return RESP.ok(pageInfo.getList(), pageInfo.getPageNum(), (int) pageInfo.getTotal());
