@@ -9,6 +9,7 @@ import com.oa2.service.SignService;
 import com.oa2.util.DU;
 import com.oa2.util.LocationUtil;
 import com.oa2.util.RESP;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -23,6 +24,7 @@ import java.util.List;
 import java.util.UUID;
 
 @Service
+@Slf4j
 public class SignServiceElasticsearchImpl implements SignService {
 
     @Autowired
@@ -35,6 +37,7 @@ public class SignServiceElasticsearchImpl implements SignService {
 
     // 获取当前员工签到记录
     @Override
+
     public RESP empSignList(HttpSession session) {
 
         System.out.println("获取当前员工签到记录");
@@ -56,6 +59,7 @@ public class SignServiceElasticsearchImpl implements SignService {
         if (TodayRecords.isEmpty()) {
             //TODO  建立当前所有员工的签到任务
             //先mysql阶段
+
             //然后是elasticsearch
             // 只为当前员工创建今日的签到记录
             // 创建上午签到记录

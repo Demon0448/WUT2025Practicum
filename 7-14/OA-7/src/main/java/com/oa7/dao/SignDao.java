@@ -41,7 +41,7 @@ public interface SignDao {
     List<SignCountDTO> selectSignCountByDay();
 
     //查询今日已签到的员工的考勤信息 不要limit
-    @Select("select sign.*,dept_name,name from day.sign " +
+    @Select("select sign.*,d.dept_name,e.name from day.sign " +
             "left join day.emp e on e.number = sign.number " +
             "left join day.department d on d.dept_id = e.dept_id  " +
             "where day.sign.signDate like concat(#{today},'%' )" +
