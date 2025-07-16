@@ -35,4 +35,9 @@ public interface EmpDao {
     @Select("select number from day.emp")
     List<Integer> selectAllEmpNumber();
 
+
+    //获得所有员工信息
+    @Select("select * from day.emp")
+    List<Emp> selectAllEmpInfo();
+
 }

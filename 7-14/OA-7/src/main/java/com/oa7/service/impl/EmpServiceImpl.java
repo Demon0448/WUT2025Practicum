@@ -146,6 +146,7 @@ public class EmpServiceImpl implements EmpService {
         if(emp1!=null){
             return null;
         }else {
+            log.info("添加员工信息：" + emp);
             int r = empDao.addEmp(emp);
             if (r > 0) {
                 return RESP.ok(emp);

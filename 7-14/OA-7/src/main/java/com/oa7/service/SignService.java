@@ -24,11 +24,20 @@ public interface SignService {
     //员工签到
     RESP updateState(Sign sign , HttpSession session, String cor);
 
-
     RESP getStatisticsChart();
 
     RESP getDailyDetails(String date);
 
     RESP getTodaySigned();
+
+    RESP getUnsigned(int currentPage, int pageSize);
+
+    RESP getSigned(int currentPage, int pageSize);
+
+    RESP rejectSign(Integer id);
+
+    RESP approveSign(Integer id);
+
+    RESP loadSignData();
 
 }

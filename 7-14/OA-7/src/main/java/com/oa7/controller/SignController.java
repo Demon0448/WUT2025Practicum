@@ -4,6 +4,7 @@ package com.oa7.controller;
 import com.oa7.pojo.Sign;
 import com.oa7.service.SignService;
 import com.oa7.util.RESP;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
@@ -15,17 +16,22 @@ import javax.servlet.http.HttpSession;
 @RestController
 @RequestMapping("/attendance")
 @CrossOrigin
+@Slf4j
 public class SignController {
 
     @Autowired
     private SignService signService;
 
     //路径 today/signed GET 无参数
+
+    //TODO ES 实现
     @GetMapping("/today/signed")
     public RESP getTodaySigned() {
         return signService.getTodaySigned();
     }
 
+
+    //TODO Mysql实现
     //路径 /daily-statistics?currentPage=1&pageSize=8
     @GetMapping("/daily-statistics")
     public RESP getDailyStatistics(@RequestParam(name = "currentPage") String currentPage ,
@@ -33,18 +39,50 @@ public class SignController {
         return signService.selectDaySignList(Integer.parseInt(currentPage), Integer.parseInt(pageSize));
     }
 
+    //TODO ES 实现
     //路径 /statistics/chart GET
     @GetMapping("/statistics/chart")
     public RESP getStatisticsChart() {
         return signService.getStatisticsChart();
     }
 
+
+    //TODO Mysql实现
     //路径 daily-details GET String date
     @GetMapping("/daily-details")
     public RESP getDailyDetails(@RequestParam(name = "date") String date) {
-
         return signService.getDailyDetails(date);
     }
+
+    //路径 /unsigned GET currentPage=1&pageSize=8
+    @GetMapping("/unsigned")
+    public RESP getUnsigned(@RequestParam(name = "currentPage") String currentPage ,
+                            @RequestParam(name = "pageSize") String pageSize) {
+        return signService.getUnsigned(Integer.parseInt(currentPage), Integer.parseInt(pageSize));
+    }
+
+    //TODO Mysql实现
+    //路径 /signed GET currentPage=1&pageSize=8
+    @GetMapping("/signed")
+    public RESP getSigned(@RequestParam(name = "currentPage") String currentPage ,
+                          @RequestParam(name = "pageSize") String pageSize) {
+        return signService.getSigned(Integer.parseInt(currentPage), Integer.parseInt(pageSize));
+    }
+
+    //TODO Mysql ES 实现同步，手动，可延伸MQ
+    //路径 /{id}/reject PUT
+    @PutMapping("/{id}/reject")
+    public RESP rejectSign(@PathVariable("id") Integer id) {
+        return signService.rejectSign(id);
+    }
+
+    //TODO Mysql ES 实现同步，手动，可延伸MQ
+    //路径 /{id}/approve PUT
+    @PutMapping("/{id}/approve")
+    public RESP approveSign(@PathVariable("id") Integer id) {
+        return signService.approveSign(id);
+    }
+
 
 
     /**
@@ -60,7 +98,6 @@ public class SignController {
             return RESP.error("获取签到记录失败：" + e.getMessage());
         }
     }
-
 
     /**
      * 员工签到
@@ -93,6 +130,14 @@ public class SignController {
             return RESP.error("获取签到记录失败：" + e.getMessage());
         }
     }
+
+
+    //TODO mysql->ES
+    @GetMapping("/load")
+    public RESP loadSignData() {
+        return signService.loadSignData();
+    }
+
 
 
 }

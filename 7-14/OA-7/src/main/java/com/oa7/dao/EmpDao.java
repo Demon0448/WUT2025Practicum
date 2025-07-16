@@ -23,7 +23,8 @@ public interface EmpDao {
     Emp selectByEmpNumber(int number);
 
     //通过员工编号更新员工信息
-    @Update("update day.emp set name=#{name} ,birthday=#{birthday} ,address=#{address} where number=#{number} ")
+    //TODO dept_id和duty_id
+    @Update("update day.emp set name=#{name} ,birthday=#{birthday} ,address=#{address} ,dept_id=#{dept_id}, duty_id=#{duty_id} where number=#{number} ")
     int updateEmp(Emp emp);
 
     //通过员工编号更新员工密码

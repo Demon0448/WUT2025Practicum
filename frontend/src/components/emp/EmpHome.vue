@@ -11,7 +11,7 @@
           </div>
         </div>
       </el-header>
-      
+
       <el-container>
         <!-- 侧边栏 -->
         <el-aside width="200px">
@@ -38,9 +38,13 @@
               <el-icon><Lock /></el-icon>
               <span>修改密码</span>
             </el-menu-item>
+            <el-menu-item index="/emp-home/LLM">
+              <el-icon><Lock /></el-icon>
+              <span>大模型</span>
+            </el-menu-item>
           </el-menu>
         </el-aside>
-        
+
         <!-- 主内容区 -->
         <el-main>
           <router-view />
@@ -83,7 +87,7 @@ const logout = async () => {
         type: 'warning',
       }
     )
-    
+
     // 用户确认后执行logout
     try {
       const response = await axios.post('/api/v1/employee/logout')
@@ -177,4 +181,4 @@ const getEmpName = async () => {
   height: 100%;
   overflow-y: auto;
 }
-</style> 
+</style>

@@ -2,6 +2,7 @@ package com.oa2.service.impl;
 
 import com.github.pagehelper.PageInfo;
 import com.oa2.dao.EmpDao;
+import com.oa2.dao.SignDao;
 import com.oa2.pojo.Emp;
 import com.oa2.pojo.Sign;
 import com.oa2.repository.SignElasticsearchRepository;
@@ -33,6 +34,9 @@ public class SignServiceElasticsearchImpl implements SignService {
     @Autowired
     private EmpDao empDao;
 
+    @Autowired
+    private SignDao signDao;
+
     private final SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
 
     // 获取当前员工签到记录
@@ -58,17 +62,25 @@ public class SignServiceElasticsearchImpl implements SignService {
 
         if (TodayRecords.isEmpty()) {
             //TODO  建立当前所有员工的签到任务
-            //先mysql阶段
-
-            //然后是elasticsearch
-            // 只为当前员工创建今日的签到记录
             // 创建上午签到记录
-            Sign morSign = createSign(emp.getNumber(), DU.getNowAM(), "未签到", "a");
-            signRepository.save(morSign);
 
-            // 创建下午签到记录
-            Sign afterSign = createSign(emp.getNumber(), DU.getNowPM(), "未签到", "p");
-            signRepository.save(afterSign);
+            //取出所有员工信息
+            List<Emp> emps =empDao.selectAllEmpInfo();
+            for(Emp e:emps){
+
+                //先写数据库mysql
+                Sign morSign = createSign(e.getNumber(), DU.getNowAM(), "未签到", "a", e.getName());
+                signDao.addSign(morSign);
+                signRepository.save(morSign);
+
+                // 创建下午签到记录
+                Sign afterSign = createSign(e.getNumber(), DU.getNowPM(), "未签到", "p", e.getName());
+                signDao.addSign(afterSign);
+                signRepository.save(afterSign);
+            }
+
+
+
 
             // 重新查询当天打卡记录
             list = signRepository.findByNumberAndDateOnly(emp.getNumber(), today);
@@ -84,7 +96,7 @@ public class SignServiceElasticsearchImpl implements SignService {
     /**
      * 创建签到记录
      */
-    private Sign createSign(int empNumber, String signDate, String state, String type) {
+    private Sign createSign(int empNumber, String signDate, String state, String type,String name) {
         Sign sign = new Sign();
         sign.setId(UUID.randomUUID().toString());
         sign.setSignDate(signDate);
@@ -94,6 +106,7 @@ public class SignServiceElasticsearchImpl implements SignService {
         sign.setTimestamp(System.currentTimeMillis());
         sign.setDateOnly(dateFormat.format(new Date()));
         sign.setTag(0);
+        sign.setName(name);
         return sign;
     }
 
@@ -137,12 +150,13 @@ public class SignServiceElasticsearchImpl implements SignService {
         Pageable pageable = PageRequest.of(currentPage - 1, pageSize);
         Page<Sign> page = signRepository.findByNumberOrderByTimestampDesc(emp.getNumber(), pageable);
 
-        //测试Page集合中数据 例如： 员工编号: 145, 签到时间: 2025-07-02 09:43:25:913, 状态: 已签到 ......
         List<Sign> list = page.getContent();
         for (int i = 0; i <list.size(); i++) {
-            System.out.println("员工编号: " + list.get(0).getNumber() +
-                               " 签到时间: " + list.get(0).getSignDate() +
-                               " 状态: " + list.get(0).getState());
+            log.info("员工编号: {}, 签到时间: {}, 状态: {}",
+                    list.get(i).getNumber(),
+                    list.get(i).getSignDate(),
+                    list.get(i).getState()
+            );
         }
 
         // 补充员工信息(补充对应的部门信息)
@@ -177,11 +191,15 @@ public class SignServiceElasticsearchImpl implements SignService {
             }
 
             Sign SignModer = null;
+
+
+
             // 查找对应类型的记录
             for (Sign record : todayRecords) {
                 System.out.println(record.getType());
                 if (sign.getType().equals(record.getType())) {
                     SignModer = record;
+                    log.info("找到今日的签到记录{}", SignModer);
                     break;
                 }
             }

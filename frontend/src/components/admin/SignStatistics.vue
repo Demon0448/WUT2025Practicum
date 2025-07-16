@@ -14,6 +14,14 @@
         <el-icon><Refresh /></el-icon>
         刷新数据
       </el-button>
+      <!-- 新增 load 按钮 -->
+      <el-button 
+        @click="handleLoad" 
+        type="default" 
+        class="load-btn"
+      >
+        load
+      </el-button>
     </div>
     
     <el-card class="chart-card" v-loading="loading" element-loading-text="正在加载图表数据...">
@@ -226,6 +234,18 @@ const refreshChart = async () => {
   await loadChartData()
 }
 
+// 新增 handleLoad 方法
+const handleLoad = async () => {
+  try {
+    const response = await axios.get('/api/v1/admin/attendance/load');
+    console.log('Load data:', response.data);
+    ElMessage.success('数据加载成功');
+  } catch (error) {
+    console.error('数据加载失败:', error);
+    ElMessage.error('数据加载失败');
+  }
+};
+
 onMounted(async () => {
   await nextTick()
   initChart()
@@ -266,6 +286,10 @@ onMounted(async () => {
 }
 
 .refresh-btn {
+  margin-left: 16px;
+}
+
+.load-btn {
   margin-left: 16px;
 }
 

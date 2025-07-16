@@ -54,7 +54,7 @@
 <!--              <span>已签到</span>-->
 <!--            </el-menu-item>-->
 <!--            signed-list-->
-            <el-menu-item index="/admin-home/signed-list" disabled>
+            <el-menu-item index="/admin-home/signed-list">
               <el-icon><Clock /></el-icon>
               <span>已签到</span>
             </el-menu-item>
@@ -65,7 +65,10 @@
               <span>未签到</span>
             </el-menu-item>
 
-
+            <el-menu-item index="/admin-home/LLM">
+              <el-icon><Clock /></el-icon>
+              <span>大模型</span>
+            </el-menu-item>
           </el-menu>
         </el-aside>
 

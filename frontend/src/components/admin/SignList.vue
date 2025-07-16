@@ -10,6 +10,18 @@
         min-width="180" 
         align="center" 
       />
+      <el-table-column 
+        label="已签到人数" 
+        prop="yc" 
+        min-width="150" 
+        align="center" 
+      />
+      <el-table-column 
+        label="未签到人数" 
+        prop="nc" 
+        min-width="150" 
+        align="center" 
+      />
       <el-table-column label="操作" min-width="200" align="center">
         <template #default="{ row }">
           <el-button @click="showHistory(row)" type="warning">查看详细信息</el-button>

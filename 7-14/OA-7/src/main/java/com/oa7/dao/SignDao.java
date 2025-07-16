@@ -14,6 +14,10 @@ import java.util.List;
 @Mapper
 public interface SignDao {
 
+    //根据ID查询考勤记录
+    @Select("select * from day.sign where id=#{id}")
+    Sign selectById(int id);
+
 
 //    SELECT
 //    DATE(STR_TO_DATE(signDate, '%Y-%m-%d %H:%i:%s:%f')) AS signDay,
@@ -107,20 +111,16 @@ public interface SignDao {
             "order by id DESC limit #{a},#{b} ")
     List<Sign> selectYesByPage(@Param("a") int a , @Param("b") int b);
 
-    //查询已签到的员工考勤信息 不要limit
-    @Select("select sign.*,dept_name,name from day.sign " +
-            "left join day.emp e on e.number = sign.number " +
-            "left join day.department d on d.dept_id = e.dept_id  " +
+    //查询已签到的员工考勤信息 不要limit  TODO
+    @Select("select sign.* from day.sign " +
             "where day.sign.state='已签到' " +
             "order by id DESC")
     List<Sign> selectYes();
 
 
 
-    //查询未签到的员工考勤信息 不要limit
-    @Select("select sign.*,dept_name,name from day.sign " +
-            "left join day.emp e on e.number = sign.number " +
-            "left join day.department d on d.dept_id = e.dept_id  " +
+    //查询未签到的员工考勤信息 不要limit TODO
+    @Select("select sign.* from day.sign " +
             "where day.sign.state='未签到' " +
             "order by id DESC")
     List<Sign> selectNo();

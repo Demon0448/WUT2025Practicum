@@ -50,15 +50,10 @@ public class SignServiceElasticsearchImpl implements SignService {
     @Override
     public RESP selectDaySignList(Integer currentPage, Integer pageSize) {
 
-////        TODO 临时测试
-//        //取出所有签到统计数据,全部存入 es
-//        List<Sign> tmp=signDao.selectAll();
-//        log.info("签到数据: {}", tmp);
-//        for(Sign sign:tmp){
-//            log.info("签到数据: {}", sign);
-//            signRepository.save(sign);
-//        }
 
+
+
+        //改造使用es实现
 
         log.info("当前页: {}, 每页大小: {}", currentPage, pageSize);
         PageHelper.startPage(currentPage, pageSize, true);
@@ -256,10 +251,7 @@ public class SignServiceElasticsearchImpl implements SignService {
 
     @Override
     public RESP getStatisticsChart() {
-
-
         //mysql 实现版本
-
 //        // 得到最近十天的日期字符串
 //        String[] lastTenDays = new String[5];
 //        List<Integer> yesCountList = new ArrayList<>(); // 已签到人数
@@ -287,7 +279,6 @@ public class SignServiceElasticsearchImpl implements SignService {
 //
 //        //TODO: 添加返回数据
 //        return RESP.ok(lastTenDays, yesCountList, noCountList, totalList);
-
         //  elasticsearch 实现版本
         // 获取今天的日期
         String today = DU.getNowSortString();
@@ -323,11 +314,8 @@ public class SignServiceElasticsearchImpl implements SignService {
             noCountList.add(noCount);
             totalList.add(yesCount + noCount);
             log.info("日期: {}, 已签到人数: {}, 未签到人数: {}, 总人数: {}", lastTenDays[i], yesCount, noCount, yesCount + noCount);
-
         }
-
         return RESP.ok(lastTenDays, yesCountList, noCountList, totalList);
-
     }
 
     @Override
@@ -374,12 +362,100 @@ public class SignServiceElasticsearchImpl implements SignService {
 
     @Override
     public RESP getTodaySigned() {
+
+//        ////        TODO 临时测试
+//        //取出所有签到统计数据,全部存入 es
+//        List<Sign> tmp=signDao.selectAll();
+//        log.info("签到数据: {}", tmp);
+//        for(Sign sign:tmp){
+//            log.info("签到数据: {}", sign);
+//            signRepository.save(sign);
+//        }
+
+
+
         // 获取今天的日期
         String today = DU.getNowSortString();
         log.info("获取今天的签到记录，日期: {}", today);
-        // 查询今天的签到记录数量 mysql
-        List<Sign> list=signDao.selectYesTargetDayByPage(today);
 
-        return RESP.ok(null,-1, (int) list.size());
+        //      TODO 弃用 Mysql        查询今天的签到记录数量 mysql
+        //      List<Sign> list=signDao.selectYesTargetDayByPage(today);
+
+        // 1. 使用 Elasticsearch 查询今天的签到记录
+        long res = signRepository.countByDateOnlyAndState(today, "已签到");
+
+        return RESP.ok(null,-1, (int) res);
+    }
+
+    @Override
+    public RESP getUnsigned(int currentPage, int pageSize) {
+        log.info("当前页: {}, 每页大小: {}", currentPage, pageSize);
+        PageHelper.startPage(currentPage, pageSize, true);
+        List<Sign> signList = signDao.selectNo();
+        PageInfo<Sign> data = new PageInfo<>(signList);
+        log.info("分页数据: {}", data);
+        return RESP.ok(data.getList(), data.getPageNum(), (int) data.getTotal());
+    }
+
+    @Override
+    public RESP getSigned(int currentPage, int pageSize) {
+        log.info("当前页: {}, 每页大小: {}", currentPage, pageSize);
+        PageHelper.startPage(currentPage, pageSize, true);
+        List<Sign> signList = signDao.selectYes();
+        PageInfo<Sign> data = new PageInfo<>(signList);
+        log.info("分页数据: {}", data);
+        return RESP.ok(data.getList(), data.getPageNum(), (int) data.getTotal());
+    }
+
+    @Override
+    public RESP rejectSign(Integer id) {
+        Sign sign = signDao.selectById(id);
+        sign.setState("未签到");
+        sign.setSign_address("已驳回");
+        String date= DU.getNowString();
+        log.info("date="+date);
+        int update = signDao.updateState(sign, date);
+        if (update <= 0) {
+            return null;
+        }
+
+        //TODO Elasticsearch 更新
+        // 更新 Elasticsearch
+        signRepository.save(sign);
+
+
+        log.info("驳回成功");
+        return RESP.ok("驳回成功", null, 0);
+    }
+
+    @Override
+    public RESP approveSign(Integer id) {
+        Sign sign = signDao.selectById(id);
+        sign.setState("已签到");
+        sign.setSign_address("补签成功");
+        String date= DU.getNowString();
+        log.info("date="+date);
+        int update = signDao.updateState(sign, date);
+        if (update <= 0) {
+            return null;
+        }
+        //TODO Elasticsearch 更新
+        // 更新 Elasticsearch
+        signRepository.save(sign);
+        log.info("补签成功");
+        return RESP.ok("补签成功", null, 0);
+    }
+
+    @Override
+    public RESP loadSignData() {
+        ////  TODO 临时测试
+        //取出所有签到统计数据,全部存入 es
+        List<Sign> tmp=signDao.selectAll();
+        log.info("签到数据: {}", tmp);
+        for(Sign sign:tmp){
+            log.info("签到数据: {}", sign);
+            signRepository.save(sign);
+        }
+        return RESP.ok(null, null, 0);
     }
 }

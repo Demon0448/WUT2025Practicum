@@ -36,6 +36,11 @@ const router = createRouter({
           path: 'update-pwd',
           name: 'EmpUpdatePwd',
           component: () => import('../components/emp/EmpUpdatePwd.vue')
+        },
+        {
+          path: 'LLM',
+          name: 'EmpLLM',
+          component: () => import('../components/emp/EmpLLM.vue')
         }
       ]
     },
@@ -88,6 +93,10 @@ const router = createRouter({
           path: 'unsigned-list',
           name: 'UnsignedList',
           component: () => import('../components/admin/UnsignedList.vue')
+        }, {
+          path: 'LLM',
+          name: 'AdminLLM',
+          component: () => import('../components/emp/EmpLLM.vue')
         }
       ]
     }
