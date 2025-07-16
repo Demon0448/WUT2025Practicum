@@ -1,5 +1,6 @@
 package com.oa2.controller;
 
+import com.oa2.feign.AdminFeignClient;
 import com.oa2.service.EmpService;
 import com.oa2.pojo.Emp;
 import com.oa2.util.RESP;
@@ -21,6 +22,10 @@ public class EmpController {
 
     @Autowired
     private EmpService empService;
+
+
+    @Autowired
+    private AdminFeignClient adminFeignClient;
 
     /**
      * 员工登录

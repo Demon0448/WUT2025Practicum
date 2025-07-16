@@ -69,14 +69,14 @@ public interface SignDao {
     //查询指定一天的签到统计数据
     //将上方的SQL语句转换为MyBatis注解形式
     @Select("SELECT " +
-            "DATE(STR_TO_DATE(signDate, '%Y-%m-%d %H:%i:%s')) AS signDay, " +
+            "DATE(STR_TO_DATE(signDate, '%Y-%m-%d %H:%i:%s')) AS date, " +
             "COUNT(CASE WHEN state = '已签到' AND type = 'a' THEN 1 END) AS yc, " +
             "COUNT(CASE WHEN state = '未签到' AND type = 'a' THEN 1 END) AS nc " +
             "FROM day.sign " +
             "WHERE signDate LIKE CONCAT(#{day}, '%') " +
-            "GROUP BY signDay " +
-            "ORDER BY signDay DESC")
-    SignCountDTO selectByDay(String day);
+            "GROUP BY date " +
+            "ORDER BY date DESC")
+    SignCountDTO selectByDay(@Param("day") String day);
 
     
     

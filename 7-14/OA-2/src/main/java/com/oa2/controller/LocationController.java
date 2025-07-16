@@ -1,7 +1,10 @@
 package com.oa2.controller;
 
+import com.oa2.feign.AdminFeignClient;
 import com.oa2.util.LocationUtil;
 import com.oa2.util.RESP;
+import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
 /**
@@ -10,7 +13,13 @@ import org.springframework.web.bind.annotation.*;
 @RestController
 @RequestMapping("/location")
 @CrossOrigin
-class LocationController {
+@Slf4j
+public class LocationController {
+
+    @Autowired
+    private AdminFeignClient adminFeignClient;
+
+
     /**
      * 根据经纬度获取地址信息
      * @param coordinates 坐标字符串，格式："纬度,经度"
@@ -18,27 +27,33 @@ class LocationController {
      */
     @GetMapping("/address")
     public RESP getAddressByCoordinates(@RequestParam("coordinates") String coordinates) {
-        System.out.println("前端开始请求地址.....");
-        System.out.println("coordinates: " + coordinates);
-        try {
-            // 验证坐标格式
-            if (!LocationUtil.isValidCoordinates(coordinates)) {
-                return RESP.error("坐标格式错误");
-            }
-            
-            // 获取地址信息
-            String address = LocationUtil.getAddressFromCoordinates(coordinates);
-            
-            if (address != null && !address.contains("错误") && !address.contains("失败")) {
-                return RESP.ok(address);
-            } else {
-                return RESP.error(address != null ? address : "位置解析失败");
-            }
-            
-        } catch (Exception e) {
-            e.printStackTrace();
-            return RESP.error("获取地址信息失败：" + e.getMessage());
-        }
+        //TODO 本地调用
+//        System.out.println("前端开始请求地址.....");
+//        System.out.println("coordinates: " + coordinates);
+//        try {
+//            // 验证坐标格式
+//            if (!LocationUtil.isValidCoordinates(coordinates)) {
+//                return RESP.error("坐标格式错误");
+//            }
+//
+//            // 获取地址信息
+//            String address = LocationUtil.getAddressFromCoordinates(coordinates);
+//
+//            if (address != null && !address.contains("错误") && !address.contains("失败")) {
+//                return RESP.ok(address);
+//            } else {
+//                return RESP.error(address != null ? address : "位置解析失败");
+//            }
+//
+//        } catch (Exception e) {
+//            e.printStackTrace();
+//            return RESP.error("获取地址信息失败：" + e.getMessage());
+//        }
+
+        //TODO openfeign远程调用
+        log.info(coordinates);
+        return adminFeignClient.getAddressByCoordinates(coordinates);
+
     }
 
     /**

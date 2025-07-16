@@ -16,6 +16,13 @@
     <description>OA系统管理员服务</description>
 
     <dependencies>
+
+        <dependency>
+            <groupId>org.springframework.cloud</groupId>
+            <artifactId>spring-cloud-starter-openfeign</artifactId>
+        </dependency>
+
+
         <!--自定义的依赖-->
         <dependency>
             <groupId>com.liuvei.common</groupId>

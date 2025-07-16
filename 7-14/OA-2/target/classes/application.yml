@@ -55,6 +55,8 @@ elasticsearch:
 logging:
   level:
     com.oa2: debug
+      #    feign
+    com.oa2.feign: debug
   pattern:
     console: '%d{yyyy-MM-dd HH:mm:ss} [%thread] %-5level %logger{36} - %msg%n'
 

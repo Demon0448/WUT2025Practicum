@@ -20,6 +20,10 @@ public class RESP {
     private int code = 200; // 状态码，默认成功
     private String message; // 消息内容
 
+
+    // 必须添加无参构造函数以支持 Jackson 反序列化
+    public RESP() {}
+
     public RESP(Object data , Object data1 , Object data2 , Object data3) {
         this.data = data;
         this.data1 = data1;
