@@ -24,7 +24,7 @@ public interface SignService {
     //员工签到
     RESP updateState(Sign sign , HttpSession session, String cor);
 
-    RESP getStatisticsChart();
+    RESP getStatisticsChart(int currentPage, int pageSize);
 
     RESP getDailyDetails(String date);
 
@@ -39,5 +39,7 @@ public interface SignService {
     RESP approveSign(Integer id);
 
     RESP loadSignData();
+
+    RESP searchByEmployeeNumberAndState(String employeeNumber, String state, Integer currentPage, Integer pageSize);
 
 }

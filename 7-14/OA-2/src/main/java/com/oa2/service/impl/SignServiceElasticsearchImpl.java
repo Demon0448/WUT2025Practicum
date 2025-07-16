@@ -169,14 +169,14 @@ public class SignServiceElasticsearchImpl implements SignService {
 
 
     @Override
-    public RESP updateState(Sign sign, HttpSession session, String coordinates) {
+    public RESP updateState(Sign tmpSign, HttpSession session, String coordinates) {
         try {
             Emp emp = (Emp) session.getAttribute("emp");
             if (emp == null) {
                 return RESP.error("用户未登录");
             }
             // 设置员工编号
-            sign.setNumber(emp.getNumber());
+            tmpSign.setNumber(emp.getNumber());
             // 查找今天该员工该类型的签到记录
 
             String today = DU.getNowSortString(); // 获取今天日期 yyyy-MM-dd
@@ -190,29 +190,29 @@ public class SignServiceElasticsearchImpl implements SignService {
                         ""+"状态: " + todayRecords.get(i).getState());
             }
 
-            Sign SignModer = null;
+            Sign sign = null;
 
 
 
             // 查找对应类型的记录
             for (Sign record : todayRecords) {
                 System.out.println(record.getType());
-                if (sign.getType().equals(record.getType())) {
-                    SignModer = record;
-                    log.info("找到今日的签到记录{}", SignModer);
+                if (tmpSign.getType().equals(record.getType())) {
+                    sign = record;
+                    log.info("找到今日的签到记录{}", sign);
                     break;
                 }
             }
 
-            if (SignModer != null) {
+            if (sign != null) {
                 // 检查是否已经签到过
-                if ("已签到".equals(SignModer.getState())) {
-                    return RESP.error("今日已" + (sign.getType().equals("a") ? "签到" : "签退") + "，不可重复操作");
+                if ("已签到".equals(sign.getState())) {
+                    return RESP.error("今日已" + (tmpSign.getType().equals("a") ? "签到" : "签退") + "，不可重复操作");
                 }
                 
                 // 更新签到状态
-                SignModer.setState("已签到");
-                SignModer.setSignDate(DU.formatDateToString(new Date()));
+                sign.setState("已签到");
+                sign.setSignDate(DU.formatDateToString(new Date()));
                 
                 // 解析地理位置
                 if (coordinates != null && !coordinates.isEmpty()) {
@@ -220,30 +220,32 @@ public class SignServiceElasticsearchImpl implements SignService {
                     if (LocationUtil.isValidCoordinates(coordinates)) {
                         try {
                             String address = LocationUtil.getAddressFromCoordinates(coordinates);
-                            SignModer.setSign_address(address);
+                            sign.setSign_address(address);
                         } catch (Exception e) {
                             System.err.println("地址解析异常：" + e.getMessage());
-                            SignModer.setSign_address("位置解析失败");
+                            sign.setSign_address("位置解析失败");
                         }
                     } else {
-                        SignModer.setSign_address("坐标格式错误");
+                        sign.setSign_address("坐标格式错误");
                     }
                 } else {
-                    SignModer.setSign_address("未获取到位置信息");
+                    sign.setSign_address("未获取到位置信息");
                 }
 
                 // 更新时间戳
-                SignModer.setTimestamp(System.currentTimeMillis());
-                SignModer.setDateOnly(today);
+                sign.setTimestamp(System.currentTimeMillis());
+                sign.setDateOnly(today);
 
                 // 补充员工信息
-                SignModer.setName(emp.getName());
-                SignModer.setDept_name(emp.getDept_name());
+                sign.setName(emp.getName());
+                sign.setDept_name(emp.getDept_name());
 
-                signRepository.save(SignModer);
-                return RESP.ok((sign.getType().equals("a") ? "签到" : "签退") + "成功");
+                // TODO 放入mysql
+                signDao.updateSign(sign);
+                signRepository.save(sign);
+                return RESP.ok((tmpSign.getType().equals("a") ? "签到" : "签退") + "成功");
             } else {
-                return RESP.error("未找到今日的" + (sign.getType().equals("a") ? "签到" : "签退") + "任务，请联系管理员");
+                return RESP.error("未找到今日的" + (tmpSign.getType().equals("a") ? "签到" : "签退") + "任务，请联系管理员");
             }
         } catch (Exception e) {
             e.printStackTrace();

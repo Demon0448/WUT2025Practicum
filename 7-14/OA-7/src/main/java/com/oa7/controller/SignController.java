@@ -42,8 +42,9 @@ public class SignController {
     //TODO ES 实现
     //路径 /statistics/chart GET
     @GetMapping("/statistics/chart")
-    public RESP getStatisticsChart() {
-        return signService.getStatisticsChart();
+    public RESP getStatisticsChart(@RequestParam(name = "currentPage") String currentPage ,
+                                   @RequestParam(name = "pageSize") String pageSize) {
+        return signService.getStatisticsChart(Integer.parseInt(currentPage), Integer.parseInt(pageSize));
     }
 
 
@@ -136,6 +137,19 @@ public class SignController {
     @GetMapping("/load")
     public RESP loadSignData() {
         return signService.loadSignData();
+    }
+
+
+
+    //TODO mysql实现
+    @RequestMapping("/searchByEmployeeNumberAndState")
+    @ResponseBody
+    public RESP searchByEmployeeNumberAndState(@RequestParam String employeeNumber,
+                                               @RequestParam String state,
+                                               @RequestParam(defaultValue = "1") Integer currentPage,
+                                               @RequestParam(defaultValue = "8") Integer pageSize) {
+        log.info("调用路径：searchByEmployeeNumber");
+        return signService.searchByEmployeeNumberAndState(employeeNumber,state ,currentPage, pageSize);
     }
 
 

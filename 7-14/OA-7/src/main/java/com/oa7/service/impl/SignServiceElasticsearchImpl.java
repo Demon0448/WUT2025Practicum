@@ -250,7 +250,7 @@ public class SignServiceElasticsearchImpl implements SignService {
     }
 
     @Override
-    public RESP getStatisticsChart() {
+    public RESP getStatisticsChart(int currentPage, int pageSize) {
         //mysql 实现版本
 //        // 得到最近十天的日期字符串
 //        String[] lastTenDays = new String[5];
@@ -279,22 +279,56 @@ public class SignServiceElasticsearchImpl implements SignService {
 //
 //        //TODO: 添加返回数据
 //        return RESP.ok(lastTenDays, yesCountList, noCountList, totalList);
+
+
+
+//        // 得到最近十天的日期字符串
+//        String[] lastTenDays = new String[10];
+//        List<Integer> yesCountList = new ArrayList<>(); // 已签到人数
+//        List<Integer> noCountList = new ArrayList<>();  // 未签到人数
+//        List<Integer> totalList = new ArrayList<>();    // 需签到总人数
+//        //TODO 一页十组，通过LocalDate.now().minusDays(i).toString()进行日期减法，得到最近十天
+//        int start = (currentPage - 1) * pageSize;
+//        for (int i = start; i < 10+start; i++) {
+//            lastTenDays[i-start] = LocalDate.now().minusDays(i).toString();
+//
+//            SignCountDTO signCountDTO = signDao.selectByDay(lastTenDays[i-start]);
+//            log.info("查询到的签到统计数据: {}", signCountDTO);
+//
+//            if (signCountDTO != null) {
+//                yesCountList.add(signCountDTO.getCountYes());
+//                noCountList.add(signCountDTO.getCountNo());
+//                totalList.add(signCountDTO.getCountYes() + signCountDTO.getCountNo());
+//            } else {
+//                // 如果某天没有数据，默认值为0
+//                yesCountList.add(0);
+//                noCountList.add(0);
+//                totalList.add(0);
+//            }
+//        }
+//
+//        //TODO: 添加返回数据
+//        return RESP.ok(lastTenDays, yesCountList, noCountList, totalList);
+
+
         //  elasticsearch 实现版本
         // 获取今天的日期
         String today = DU.getNowSortString();
-        // 获取最近5天的日期
-        String[] lastTenDays = new String[5];
+        // 获取最近pageSize天的日期
+        String[] lastDays = new String[pageSize];
         List<Integer> yesCountList = new ArrayList<>(); // 已签到人数
         List<Integer> noCountList = new ArrayList<>();
         List<Integer> totalList = new ArrayList<>();
-        for (int i = 0; i < 5; i++) {
-            lastTenDays[i] =LocalDate.now().minusDays(i).toString();
+        int start = (currentPage - 1) * pageSize;
+        for (int i = start; i < pageSize+start; i++) {
+            log.info("当前页: {}, 每页大小: {}, 计算日期索引: {}", currentPage, pageSize, i);
+            lastDays[i-start] =LocalDate.now().minusDays(i).toString();
             //1 取出这一天签到记录
             //mysql版本
             //List<Sign> signList = signDao.selectByDate(lastTenDays[i]);
             //elasticsearch版本
-            log.info("查询的日期: {}", lastTenDays[i]);
-            List<Sign> signList = signRepository.findByDateOnly(lastTenDays[i]);
+            log.info("查询的日期: {}", lastDays[i-start]);
+            List<Sign> signList = signRepository.findByDateOnly(lastDays[i-start]);
             log.info("查询到的签到数据: {}", signList);
 
             // 如果没有签到记录，默认值为0
@@ -313,9 +347,9 @@ public class SignServiceElasticsearchImpl implements SignService {
             yesCountList.add(yesCount);
             noCountList.add(noCount);
             totalList.add(yesCount + noCount);
-            log.info("日期: {}, 已签到人数: {}, 未签到人数: {}, 总人数: {}", lastTenDays[i], yesCount, noCount, yesCount + noCount);
+            log.info("日期: {}, 已签到人数: {}, 未签到人数: {}, 总人数: {}", lastDays[i-start], yesCount, noCount, yesCount + noCount);
         }
-        return RESP.ok(lastTenDays, yesCountList, noCountList, totalList);
+        return RESP.ok(lastDays, yesCountList, noCountList, totalList);
     }
 
     @Override
@@ -457,5 +491,14 @@ public class SignServiceElasticsearchImpl implements SignService {
             signRepository.save(sign);
         }
         return RESP.ok(null, null, 0);
+    }
+
+    @Override
+    public RESP searchByEmployeeNumberAndState(String employeeNumber, String state, Integer currentPage, Integer pageSize) {
+        log.info("当前页: {}, 每页大小: {}, 工号: {}", currentPage, pageSize, employeeNumber);
+        PageHelper.startPage(currentPage, pageSize, true);
+        List<Sign> signList = signDao.selectByEmployeeNumberAndState(employeeNumber, state);
+        PageInfo<Sign> data = new PageInfo<>(signList);
+        return RESP.ok(data.getList(), data.getPageNum(), (int) data.getTotal());
     }
 }

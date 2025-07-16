@@ -1,9 +1,9 @@
 <template>
   <div class="signed-list">
     <b class="page-title">已签到员工</b>
-    
+
     <div class="toolbar">
-      <el-button @click="showToday" type="primary">查看今日</el-button>
+
     </div>
 
     <!-- 数据展现表格 -->
@@ -18,9 +18,12 @@
               size="small"
               style="width: 200px; margin-left: 10px"
             />
+            <!-- 新增查询按钮 -->
+            <el-button @click="handleSearch" type="success" style="margin-left: 10px;">查询</el-button>
           </div>
         </template>
-        
+
+        <!-- 表格列定义 -->
         <el-table-column label="日期" prop="signDate" min-width="200" align="center" />
         <el-table-column label="工号" prop="number" min-width="120" align="center" />
         <el-table-column label="姓名" prop="name" min-width="120" align="center" />
@@ -34,6 +37,11 @@
             >
               {{ row.state }}
             </el-tag>
+          </template>
+        </el-table-column>
+        <el-table-column label="时间段" min-width="120" align="center">
+          <template #default="{ row }">
+            {{ row.type === 'a' ? 'AM' : 'PM' }}
           </template>
         </el-table-column>
         <el-table-column label="操作" min-width="180" align="center">
@@ -100,7 +108,7 @@ const pagination = reactive({
 
 const filteredTableData = computed(() => {
   if (!searchUsers.value) return tableData.value
-  return tableData.value.filter(data => 
+  return tableData.value.filter(data =>
     data.number.toLowerCase().includes(searchUsers.value.toLowerCase())
   )
 })
@@ -114,7 +122,7 @@ const selectByPage = async () => {
         pageSize: pagination.pageSize
       }
     })
-    
+
     if (response.data && response.data.data) {
       tableData.value = response.data.data || []
       pagination.total = response.data.total || 0
@@ -138,7 +146,7 @@ const selectTodayByPage = async () => {
         pageSize: pagination.pageSize
       }
     })
-    
+
     if (response.data && response.data.data) {
       tableData.value = response.data.data || []
       pagination.total = response.data.total || 0
@@ -181,6 +189,35 @@ const showToday = () => {
   }
 }
 
+const handleSearch = async () => {
+  loading.value = true;
+  try {
+    const response = await axios.get('/api/v1/admin/attendance/searchByEmployeeNumberAndState', {
+      params: {
+        employeeNumber: searchUsers.value,
+        state: '已签到', // 假设默认查询状态为"已签到"
+        currentPage: 1, // 重置分页到第一页
+        pageSize: pagination.pageSize
+      }
+    });
+
+    if (response.data && response.data.data) {
+      tableData.value = response.data.data || [];
+      pagination.total = response.data.total || 0;
+
+      // 强制清空搜索框内容以触发 filteredTableData 重新计算
+      searchUsers.value = '';
+    } else {
+      ElMessage.error('获取签到记录失败');
+    }
+  } catch (error) {
+    console.error('获取签到记录失败:', error);
+    ElMessage.error('获取签到记录失败');
+  } finally {
+    loading.value = false;
+  }
+};
+
 const handleReject = (row: any) => {
   if (row.tag === 0) return
   currentEmp.value = row
@@ -191,7 +228,7 @@ const confirmReject = async () => {
   dialogVisible.value = false
   try {
     const response = await axios.put(`/api/v1/admin/attendance/${currentEmp.value.id}/reject`)
-    
+
     if (response.data === 'true' || response.data === true || (response.data && response.data.data)) {
       ElMessage.success('驳回成功')
       if (showTodayOnly.value) {
@@ -207,6 +244,7 @@ const confirmReject = async () => {
     ElMessage.error('驳回失败')
   }
 }
+
 
 onMounted(() => {
   selectByPage()

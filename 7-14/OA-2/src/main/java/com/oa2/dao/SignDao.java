@@ -46,4 +46,18 @@ public interface SignDao {
     int updateState(@Param("sign") Sign sign , @Param("date") String date);
 
 
+
+//    // 更新时间戳
+//                SignModer.setTimestamp(System.currentTimeMillis());
+//                SignModer.setDateOnly(today);
+//
+//    // 补充员工信息
+//                SignModer.setName(emp.getName());
+//                SignModer.setDept_name(emp.getDept_name());
+
+    @Update("update day.sign set state=#{sign.state} , " +
+            "signDate=#{sign.signDate} , " +
+            "sign_address=#{sign.sign_address}  " +
+            "where id=#{sign.id}")
+    int updateSign(@Param("sign")Sign sign);
 }
