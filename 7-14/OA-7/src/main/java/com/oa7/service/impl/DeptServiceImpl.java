@@ -86,7 +86,12 @@ public class DeptServiceImpl implements DeptService {
         return null;
     }
 
-
+    @Override
+    public String selectDeptById(String deptId) {
+        //直接查数据库
+        Department department = deptDao.selectByDeptId(Integer.parseInt(deptId));
+        return (department != null) ? department.getDept_name() : null;
+    }
 
 
     private void cleanCache(String pattern){

@@ -48,7 +48,7 @@ public class SignController {
     }
 
 
-    //TODO Mysql实现
+    //TODO ElasticSearch
     //路径 daily-details GET String date
     @GetMapping("/daily-details")
     public RESP getDailyDetails(@RequestParam(name = "date") String date) {

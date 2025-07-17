@@ -36,6 +36,13 @@ public class DeptController {
     }
 
 
+    //TODO Openfeign调用根据ID查询部门名称
+    @GetMapping("/departments/{dept_id}")
+    @ResponseBody
+    public String selectDeptById(@PathVariable("dept_id") String dept_id) {
+        return deptService.selectDeptById(dept_id);
+    }
+
 
 
 }

@@ -19,8 +19,12 @@ public interface SignDao {
     List<Sign> selectEmpSign(@Param("emp") Emp emp , @Param("today") String today);
 
 
-    @Insert("insert into day.sign(signDate,number,state,type) values (#{signDate} ,#{number} ,#{state} ,#{type} )")
-    int addSign(Sign sign);
+//    @Insert("insert into day.sign(signDate,number,state,type) values (#{signDate} ,#{number} ,#{state} ,#{type} )")
+    //联表查询，加入dept_name,name
+    @Insert("insert into day.sign(signDate,number,state,type,sign_address,timestamp,name,dept_name,dateOnly) " +
+            "values (#{sign.signDate} ,#{sign.number} ,#{sign.state} ,#{sign.type} ,#{sign.sign_address} ,#{sign.timestamp},#{sign.name},#{sign.dept_name},#{sign.dateOnly})")
+    @Options(useGeneratedKeys = true, keyProperty = "id", keyColumn = "id")
+    int addSign(@Param("sign")Sign sign);
 
 
     @Select("select sign.*,dept_name,name from day.sign " +
@@ -57,7 +61,9 @@ public interface SignDao {
 
     @Update("update day.sign set state=#{sign.state} , " +
             "signDate=#{sign.signDate} , " +
-            "sign_address=#{sign.sign_address}  " +
+            "sign_address=#{sign.sign_address}  ," +
+            "timestamp=#{sign.timestamp}  ," +
+            "dateOnly=#{sign.dateOnly} "+
             "where id=#{sign.id}")
     int updateSign(@Param("sign")Sign sign);
 }

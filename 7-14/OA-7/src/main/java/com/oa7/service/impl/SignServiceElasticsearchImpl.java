@@ -357,8 +357,14 @@ public class SignServiceElasticsearchImpl implements SignService {
         //TODO 先都使用mysql实现，后面再换成elasticsearch
         SignDetailDTO  signDetailDTO = new SignDetailDTO();
         int msc=0,muc=0,esc=0,euc=0,tsc=0,tuc=0;
+
         //1 取出这一天签到记录
-        List<Sign> signList = signDao.selectByDate(date);
+        //List<Sign> signList = signDao.selectByDate(date);
+        //TODO 用elasticsearch实现
+        List<Sign> signList = signRepository.findByDateOnly(date);
+
+
+        log.info("查询到的签到数据: {}", signList);
         //2 查询这一天的签到记录，更新signDetailDTO
         for(Sign sign : signList){
             if(sign.getState().equals("已签到")){

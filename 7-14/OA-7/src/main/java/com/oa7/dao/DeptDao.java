@@ -44,4 +44,8 @@ public interface DeptDao {
     //添加新的部门
     @Insert("insert into day.department(dept_name) values (#{dept_name} )")
     int addDept(Department department);
+
+    //根据部门ID查询部门
+    @Select("select * from day.department where dept_id=#{dept_id} ")
+    Department selectByDeptId(int dept_id);
 }

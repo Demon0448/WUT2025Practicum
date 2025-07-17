@@ -8,7 +8,6 @@
         <groupId>com.oa</groupId>
         <artifactId>oa-microservices</artifactId>
         <version>1.0.0</version>
-        <relativePath>../pom.xml</relativePath>
     </parent>
 
     <artifactId>oa-admin-service</artifactId>

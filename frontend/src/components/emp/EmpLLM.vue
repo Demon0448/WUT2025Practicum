@@ -16,7 +16,7 @@ const messageList = ref([
     message: '我是小智助手，有什么问题尽管问我吧！',
   },
 ])
-const apiKey = 'sk-08f86350ab6d408b9845c1f8515f2e1' // 实际API Key 8-1
+const apiKey = 'sk-08f86350ab6d408b9845c1f8515f2e1' // 实际API Key  6+1
 const apiUrl = 'https://api.deepseek.com/chat/completions'
 const abortController = ref(null)
 

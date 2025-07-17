@@ -8,4 +8,6 @@ public interface DeptService {
     RESP insertDept(String deptName, int currentPage, int pageSize);
 
     RESP updateDeptNameById(String dept_id, String deptName, int currentPage, int pageSize);
+
+    String selectDeptById(String deptId);
 }

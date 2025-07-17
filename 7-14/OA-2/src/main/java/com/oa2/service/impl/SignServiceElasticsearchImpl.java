@@ -3,6 +3,7 @@ package com.oa2.service.impl;
 import com.github.pagehelper.PageInfo;
 import com.oa2.dao.EmpDao;
 import com.oa2.dao.SignDao;
+import com.oa2.feign.AdminFeignClient;
 import com.oa2.pojo.Emp;
 import com.oa2.pojo.Sign;
 import com.oa2.repository.SignElasticsearchRepository;
@@ -37,6 +38,9 @@ public class SignServiceElasticsearchImpl implements SignService {
     @Autowired
     private SignDao signDao;
 
+    @Autowired
+    private AdminFeignClient adminFeignClient;
+
     private final SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
 
     // 获取当前员工签到记录
@@ -62,25 +66,31 @@ public class SignServiceElasticsearchImpl implements SignService {
 
         if (TodayRecords.isEmpty()) {
             //TODO  建立当前所有员工的签到任务
-            // 创建上午签到记录
+
 
             //取出所有员工信息
             List<Emp> emps =empDao.selectAllEmpInfo();
             for(Emp e:emps){
 
+                // 创建上午签到记录
                 //先写数据库mysql
-                Sign morSign = createSign(e.getNumber(), DU.getNowAM(), "未签到", "a", e.getName());
+                //TODO BUG 主键返回忘记了，导致id字段在mysql和elasticsearch不一致.
+                //@Insert("insert into day.sign(signDate,number,state,type) values (#{signDate} ,#{number} ,#{state} ,#{type} )")
+                //    @Options(useGeneratedKeys = true, keyProperty = "id", keyColumn = "id")
+                //    int addSign(Sign sign);
+                String dayOnly = dateFormat.format(new Date());
+                Sign morSign = createSign(e.getNumber(), DU.getNowAM(), "未签到", "a", e.getName(),dayOnly);
                 signDao.addSign(morSign);
                 signRepository.save(morSign);
 
                 // 创建下午签到记录
-                Sign afterSign = createSign(e.getNumber(), DU.getNowPM(), "未签到", "p", e.getName());
+                //先写数据库mysql
+                Sign afterSign = createSign(e.getNumber(), DU.getNowPM(), "未签到", "p", e.getName(),dayOnly);
                 signDao.addSign(afterSign);
                 signRepository.save(afterSign);
+
+                log.info("创建签到记录: {} 上午签到, {} 下午签到", morSign, afterSign);
             }
-
-
-
 
             // 重新查询当天打卡记录
             list = signRepository.findByNumberAndDateOnly(emp.getNumber(), today);
@@ -96,8 +106,9 @@ public class SignServiceElasticsearchImpl implements SignService {
     /**
      * 创建签到记录
      */
-    private Sign createSign(int empNumber, String signDate, String state, String type,String name) {
+    private Sign createSign(int empNumber, String signDate, String state, String type,String name,String dateOnly) {
         Sign sign = new Sign();
+        //TODO 没用，被主键返回替代
         sign.setId(UUID.randomUUID().toString());
         sign.setSignDate(signDate);
         sign.setNumber(empNumber);
@@ -107,6 +118,20 @@ public class SignServiceElasticsearchImpl implements SignService {
         sign.setDateOnly(dateFormat.format(new Date()));
         sign.setTag(0);
         sign.setName(name);
+        //查出来部门名字
+        Emp emp = empDao.selectByEmpNumber(empNumber);
+        //得到部门id
+        //根据部门ID查询部门名称
+        int dept_id = emp.getDept_id();
+        // 调用FeignClient查询部门名称 TODO
+        String deptName = adminFeignClient.selectDeptById(String.valueOf(dept_id));
+
+
+        //dateOnly字段
+        sign.setDateOnly(dateOnly);
+
+
+        sign.setDept_name(deptName); // 默认部门，后续可以通过查询补充
         return sign;
     }
 
@@ -151,13 +176,7 @@ public class SignServiceElasticsearchImpl implements SignService {
         Page<Sign> page = signRepository.findByNumberOrderByTimestampDesc(emp.getNumber(), pageable);
 
         List<Sign> list = page.getContent();
-        for (int i = 0; i <list.size(); i++) {
-            log.info("员工编号: {}, 签到时间: {}, 状态: {}",
-                    list.get(i).getNumber(),
-                    list.get(i).getSignDate(),
-                    list.get(i).getState()
-            );
-        }
+
 
         // 补充员工信息(补充对应的部门信息)
         list = AddEmpInfo(list);
@@ -183,15 +202,8 @@ public class SignServiceElasticsearchImpl implements SignService {
 
             // 先查询今天所有记录，然后筛选类型
             List<Sign> todayRecords = signRepository.findByNumberAndDateOnly(emp.getNumber(), today);
-            System.out.println("签到的时候 查询记录");
-            for (int i = 0; i <todayRecords.size(); i++) {
-                System.out.println("员工编号: " + todayRecords.get(i).getNumber() +
-                        ""+"签到时间: " + todayRecords.get(i).getSignDate() +
-                        ""+"状态: " + todayRecords.get(i).getState());
-            }
 
             Sign sign = null;
-
 
 
             // 查找对应类型的记录
@@ -240,9 +252,12 @@ public class SignServiceElasticsearchImpl implements SignService {
                 sign.setName(emp.getName());
                 sign.setDept_name(emp.getDept_name());
 
+                log.info("签到记录为: {}", sign);
                 // TODO 放入mysql
                 signDao.updateSign(sign);
+                // // 保存到 Elasticsearch
                 signRepository.save(sign);
+
                 return RESP.ok((tmpSign.getType().equals("a") ? "签到" : "签退") + "成功");
             } else {
                 return RESP.error("未找到今日的" + (tmpSign.getType().equals("a") ? "签到" : "签退") + "任务，请联系管理员");
